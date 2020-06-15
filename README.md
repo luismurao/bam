@@ -46,7 +46,7 @@ The main functions of the package are:
 
 ```r
 if (!require('devtools')) install.packages('devtools')
-devtools::install_github('luismurao/ntbox')
+devtools::install_github('luismurao/bam')
 # If you want to build vignette, install pandoc before and then
 devtools::install_github('luismurao/bam',build_vignettes=TRUE)
 ```
