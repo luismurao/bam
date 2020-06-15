@@ -1,5 +1,7 @@
 # The BAM package <a href='https://luismurao.github.io/'><img src='inst/figures/bam_logo.png' align="right" height="139" /></a>
 
+**Authors: Luis Osorio-Olvera & Jorge Soberon**
+
 ## Overview
 
 The `bam` package is an R package designed to estimate dynamic models of
