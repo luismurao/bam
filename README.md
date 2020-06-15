@@ -1,4 +1,4 @@
-# The BAM package <a href='https://dplyr.tidyverse.org'><img src='inst/figures/bam_logo.png' align="right" height="139" /></a>
+# The BAM package <a href='https://luismurao.github.io/'><img src='inst/figures/bam_logo.png' align="right" height="139" /></a>
 
 ## Overview
 
