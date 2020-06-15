@@ -41,7 +41,7 @@ The main functions of the package are:
  automaton of the area of distribution. 
  
 
-# Intallation
+# Installation
 
 
 ```r
