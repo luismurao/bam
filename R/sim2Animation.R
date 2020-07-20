@@ -67,6 +67,7 @@ sim2Animation <- function(sdm_simul,which_steps,
     titles <- paste(titles,paste(extra_legend,collapse = "; "),
                     sep="; ")
   }
+
   pb <- utils::txtProgressBar(min = 0,
                               max = length(which_steps),
                               style = 3)
@@ -76,9 +77,9 @@ sim2Animation <- function(sdm_simul,which_steps,
                            ani.res = ani.res)
 
     animation::saveGIF({
-      for (i in which_steps) {
+      for (i in seq_along(which_steps)) {
         sdm_st <- sdm_simul@bin_model
-        sdm_st[sdm_simul@cellIDs] <- sdm_simul@sdm_sim[[i]]
+        sdm_st[sdm_simul@cellIDs] <- sdm_simul@sdm_sim[[which_steps[i]]]
 
         sdm_st <- sdm_simul@bin_model + sdm_st
 
@@ -118,9 +119,9 @@ sim2Animation <- function(sdm_simul,which_steps,
                       fsep = '/')
     dir3 <- gsub("[.]","_",dir3)
     animation::saveHTML({
-      for (i in which_steps) {
+      for (i in seq_along(which_steps)) {
         sdm_st <- sdm_simul@bin_model
-        sdm_st[sdm_simul@cellIDs] <- sdm_simul@sdm_sim[[i]]
+        sdm_st[sdm_simul@cellIDs] <- sdm_simul@sdm_sim[[which_steps[i]]]
 
         sdm_st <- sdm_simul@bin_model + sdm_st
 
