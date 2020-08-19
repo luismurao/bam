@@ -46,6 +46,12 @@ each time period}
 \item{ani.height}{Animation height unit in px}
 
 \item{ani.res}{Animation resolution unit in px}
+
+\item{bg_color}{Color for unsuitable pixels. Default "#F6F2E5".}
+
+\item{suit_color}{Color for suitable pixels. Default "#0076BE".}
+
+\item{occupied_color}{Color for occupied pixels. Default "#03C33F".}
 }
 \description{
 predicts species' distribution under suitability changes

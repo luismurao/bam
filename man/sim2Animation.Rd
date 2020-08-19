@@ -11,6 +11,9 @@ sim2Animation(
   filename,
   png_keyword = "sdm_sim",
   extra_legend = NULL,
+  bg_color = "#F6F2E5",
+  suit_color = "#0076BE",
+  occupied_color = "#03C33F",
   gif_vel = 0.8,
   ani.width = 1200,
   ani.height = 1200,
@@ -31,14 +34,20 @@ are going to be converted into raster layers.}
 
 \item{extra_legend}{A legend  to add to the animation.}
 
+\item{bg_color}{Color for unsuitable pixels. Default "#F6F2E5".}
+
+\item{suit_color}{Color for suitable pixels. Default "#0076BE".}
+
+\item{occupied_color}{Color for occupied pixels. Default "#03C33F".}
+
 \item{gif_vel}{A value that regulates the velocity of frame transitions. The bigger it is the transition will be slower
 default 0.8}
 
-\item{ani.width}{Animation width unit in px}
+\item{ani.width}{Animation width unit in px.}
 
-\item{ani.height}{Animation height unit in px}
+\item{ani.height}{Animation height unit in px.}
 
-\item{ani.res}{Animation resolution unit in px}
+\item{ani.res}{Animation resolution unit in px.}
 }
 \value{
 A RasterStack of species' distribution at each simulation step

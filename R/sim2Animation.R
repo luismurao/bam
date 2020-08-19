@@ -5,9 +5,12 @@
 #' @param which_steps A numeric vector indicating the simulation steps that
 #' are going to be converted into raster layers.
 #' @param extra_legend A legend  to add to the animation.
-#' @param ani.width Animation width unit in px
-#' @param ani.height Animation height unit in px
-#' @param ani.res Animation resolution unit in px
+#' @param bg_color Color for unsuitable pixels. Default "#F6F2E5".
+#' @param suit_color Color for suitable pixels. Default "#0076BE".
+#' @param occupied_color Color for occupied pixels. Default "#03C33F".
+#' @param ani.width Animation width unit in px.
+#' @param ani.height Animation height unit in px.
+#' @param ani.res Animation resolution unit in px.
 #' @param gif_vel A value that regulates the velocity of frame transitions. The bigger it is the transition will be slower
 #' default 0.8
 #' @param fmt Animation format. Posible values are GIF and HTML
@@ -47,6 +50,9 @@ sim2Animation <- function(sdm_simul,which_steps,
                           fmt="GIF",filename,
                           png_keyword="sdm_sim",
                           extra_legend = NULL,
+                          bg_color = "#F6F2E5",
+                          suit_color = "#0076BE",
+                          occupied_color = "#03C33F",
                           gif_vel =0.8,
                           ani.width = 1200,
                           ani.height = 1200,
@@ -85,8 +91,8 @@ sim2Animation <- function(sdm_simul,which_steps,
 
         maxv <- raster::maxValue(sdm_st)
 
-        if(maxv<1.5) colores <- c("#F6F2E5","#0076BE")
-        else colores <- c("#F6F2E5","#0076BE","#03C33F")
+        if(maxv<1.5) colores <- c(bg_color,suit_color)
+        else colores <- c(bg_color,suit_color,occupied_color)
 
         graphics::par(xpd = FALSE)
 
@@ -100,7 +106,7 @@ sim2Animation <- function(sdm_simul,which_steps,
         graphics::legend(
           "bottom",
           legend = c("Unsuitable", "Suitable", "Occupied"),
-          fill = c("#F6F2E5","#0076BE","#03C33F"),
+          fill = colores,
           horiz = TRUE,
           inset = -0.2,
           cex = 0.75,
@@ -126,8 +132,8 @@ sim2Animation <- function(sdm_simul,which_steps,
         sdm_st <- sdm_simul@bin_model + sdm_st
 
         maxv <- raster::maxValue(sdm_st)
-        if(maxv<1.5) colores <- c("#F6F2E5","#0076BE")
-        else colores <- c("#F6F2E5","#0076BE","#03C33F")
+        if(maxv<1.5) colores <- c(bg_color,suit_color)
+        else colores <- c(bg_color,suit_color,occupied_color)
 
         graphics::par(xpd = FALSE)
 
@@ -141,7 +147,7 @@ sim2Animation <- function(sdm_simul,which_steps,
         graphics::legend(
           "bottom",
           legend = c("Unsuitable", "Suitable", "Occupied"),
-          fill = c("#F6F2E5","#0076BE","#03C33F"),
+          fill = colores,
           horiz = TRUE,
           inset = -0.2,
           cex = 0.75,

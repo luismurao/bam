@@ -122,6 +122,9 @@ methods::setMethod(f = "show",
 #' @param nsteps_vec Number of simulation steps for each time period.
 #' @param animate Logical. If TRUE a dispersal animation on climate change scenarios will be created
 #' @param period_names Character vector with the names of periods that will be animated. Default NULL.
+#' @param bg_color Color for unsuitable pixels. Default "#F6F2E5".
+#' @param suit_color Color for suitable pixels. Default "#0076BE".
+#' @param occupied_color Color for occupied pixels. Default "#03C33F".
 #' @param ani.width Animation width unit in px
 #' @param ani.height Animation height unit in px
 #' @param ani.res Animation resolution unit in px
@@ -337,8 +340,8 @@ methods::setMethod(f = "predict",
                          animation::saveGIF({
                            for (i in 1:raster::nlayers(sdm_st)) {
                              maxv <- raster::maxValue(sdm_st[[i]])
-                             if(maxv<1.5) colores <- c("#F6F2E5","#0076BE")
-                             else colores <- c("#F6F2E5","#0076BE","#03C33F")
+                             if(maxv<1.5) colores <- c(bg_color,suit_color)
+                             else colores <- c(bg_color,suit_color,occupied_color)
 
                              graphics::par(xpd = FALSE)
 
@@ -352,7 +355,7 @@ methods::setMethod(f = "predict",
                              graphics::legend(
                                "bottom",
                                legend = c("Unsuitable", "Suitable", "Occupied"),
-                               fill = c("#F6F2E5","#0076BE","#03C33F"),
+                               fill = colores,
                                horiz = TRUE,
                                inset = -0.2,
                                cex = 0.75,
@@ -375,8 +378,8 @@ methods::setMethod(f = "predict",
                          animation::saveHTML({
                            for (i in 1:raster::nlayers(sdm_st)) {
                              maxv <- raster::maxValue(sdm_st[[i]])
-                             if(maxv<1.5) colores <- c("#F6F2E5","#0076BE")
-                             else colores <- c("#F6F2E5","#0076BE","#03C33F")
+                             if(maxv<1.5) colores <- c(bg_color,suit_color)
+                             else colores <- c(bg_color,suit_color,occupied_color)
 
                              graphics::par(xpd = FALSE)
 
@@ -390,7 +393,7 @@ methods::setMethod(f = "predict",
                              graphics::legend(
                                "bottom",
                                legend = c("Unsuitable", "Suitable", "Occupied"),
-                               fill = c("#F6F2E5","#0076BE","#03C33F"),
+                               fill = colores,
                                horiz = TRUE,
                                inset = -0.2,
                                cex = 0.75,
