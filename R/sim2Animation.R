@@ -11,6 +11,9 @@
 #' @param ani.width Animation width unit in px.
 #' @param ani.height Animation height unit in px.
 #' @param ani.res Animation resolution unit in px.
+#' @param ani.width Animation width unit in px
+#' @param ani.height Animation height unit in px
+#' @param ani.res Animation resolution unit in px
 #' @param gif_vel A value that regulates the velocity of frame transitions. The bigger it is the transition will be slower
 #' default 0.8
 #' @param fmt Animation format. Posible values are GIF and HTML

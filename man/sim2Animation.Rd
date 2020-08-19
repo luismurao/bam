@@ -43,11 +43,11 @@ are going to be converted into raster layers.}
 \item{gif_vel}{A value that regulates the velocity of frame transitions. The bigger it is the transition will be slower
 default 0.8}
 
-\item{ani.width}{Animation width unit in px.}
+\item{ani.width}{Animation width unit in px}
 
-\item{ani.height}{Animation height unit in px.}
+\item{ani.height}{Animation height unit in px}
 
-\item{ani.res}{Animation resolution unit in px.}
+\item{ani.res}{Animation resolution unit in px}
 }
 \value{
 A RasterStack of species' distribution at each simulation step
