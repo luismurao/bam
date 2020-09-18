@@ -1,8 +1,8 @@
 Package: bam
 Type: Package
 Title: Species Distribution Models in the light of the BAM theory
-Version: 0.2.2
-Date: 2020-05-13
+Version: 0.2.2.1
+Date: 2020-18-09
 Authors@R: c(person("Luis", "Osorio-Olvera", 
                  email = "luimurao@gmail.com", 
                  role = c("aut", "cre"),
