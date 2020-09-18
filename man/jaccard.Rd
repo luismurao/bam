@@ -2,7 +2,7 @@
 % Please edit documentation in R/jaccard.R
 \name{jaccard}
 \alias{jaccard}
-\title{jaccard: Estimates the jaccard index for comparing two binary maps}
+\title{jaccard: Estimates the Jaccard index for comparing two binary maps}
 \usage{
 jaccard(m1, m2)
 }
@@ -12,10 +12,11 @@ jaccard(m1, m2)
 \item{m2}{A binary raster A or an object of class setA returned by the function \code{\link[bam]{model2sparse}}.}
 }
 \value{
-Returns a numeric value representing the Jaccard index.
+Returns a data.frame with three values: 1) jaccard (Jaccard index),
+2) percentage_m1 (the percentage of m1 that the intersection \eqn{|A \cap B|} represents), and 3) percentage_m2
 }
 \description{
-Estimates the jaccard index for comparing two binary maps
+Estimates the Jaccard index for comparing two binary maps
 }
 \details{
 The Jaccard index is computed as follows

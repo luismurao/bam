@@ -1,9 +1,10 @@
-#' jaccard: Estimates the jaccard index for comparing two binary maps
+#' jaccard: Estimates the Jaccard index for comparing two binary maps
 #'
-#' @description Estimates the jaccard index for comparing two binary maps
+#' @description Estimates the Jaccard index for comparing two binary maps
 #' @param m1 A binary raster A or an object of class setA returned by the function \code{\link[bam]{model2sparse}}.
 #' @param m2 A binary raster A or an object of class setA returned by the function \code{\link[bam]{model2sparse}}.
-#' @return Returns a numeric value representing the Jaccard index.
+#' @return Returns a data.frame with three values: 1) jaccard (Jaccard index),
+#' 2) percentage_m1 (the percentage of m1 that the intersection \eqn{|A \cap B|} represents), and 3) percentage_m2
 #' @details The Jaccard index is computed as follows
 #' \deqn{J(A,B) = {{|A \cap B|}\over{|A \cup B|}} = {{|A \cap B|}\over{|A| + |B| - |A \cap B|}}.}
 #' @export
@@ -43,6 +44,11 @@ jaccard <- function(m1,m2){
   B <- sum(m2)
   int_AB <- sum(m3)
   jcc <-int_AB/(A+B- int_AB)
+  percentage_of_m1 <- int_AB*100/A
+  percentage_of_m2 <- int_AB*100/B
 
-  return(jcc)
+  jcc_metrics <- data.frame(jaccard=jcc,
+                            percentage_of_m1,
+                            percentage_of_m2)
+  return(jcc_metrics)
 }
