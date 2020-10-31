@@ -4,6 +4,7 @@
 \alias{show,setA-method}
 \alias{show,csd-method}
 \alias{show,pam-method}
+\alias{show,bioindex_sparse-method}
 \alias{show,setM-method}
 \title{Show information in setA class \pkg{bam}.}
 \usage{
@@ -12,6 +13,8 @@
 \S4method{show}{csd}(object)
 
 \S4method{show}{pam}(object)
+
+\S4method{show}{bioindex_sparse}(object)
 
 \S4method{show}{setM}(object)
 }
@@ -22,6 +25,8 @@
 Show information in setA class \pkg{bam}.
 
 Show information in csd class \pkg{bam}.
+
+Show information in pam class \pkg{bam}.
 
 Show information in pam class \pkg{bam}.
 

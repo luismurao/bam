@@ -2,9 +2,9 @@ Package: bam
 Type: Package
 Title: Species Distribution Models in the light of the BAM theory
 Version: 0.2.2.1
-Date: 2020-18-09
+Date: 2020-31-10
 Authors@R: c(person("Luis", "Osorio-Olvera", 
-                 email = "luimurao@gmail.com", 
+                 email = "luismurao@gmail.com", 
                  role = c("aut", "cre"),
                  comment = c(ORCID = "0000-0003-0701-5398")),
             person("Jorge", "Soberón",
@@ -31,7 +31,6 @@ Imports:
     leaflet (>= 2.0),
     Rdpack (>= 0.11.0),
     animation (>= 2.3),
-    RcppArmadillo (>= 0.8),
     Rcpp (>= 0.12.18)
 Suggest: 
     maptools(>= 0.9.4), sp(>= 1.3.0)

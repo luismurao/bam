@@ -78,6 +78,31 @@ methods::setMethod(f = "show",
 
                    })
 
+
+#' Show information in pam class \pkg{bam}.
+#' @importFrom methods new
+#' @param object An object of class bioindiex_sparse
+#' @rdname show
+#' @export
+
+methods::setMethod(f = "show",
+                   signature = "bioindex_sparse",
+                   function(object) {
+                     slotsin <- methods::slotNames(object)
+                     cat("Object of class bioindex it contains",
+                         length(slotsin),"slots: \n\n")
+                     cat("@alpha: A sparse matrix with the richness of species per site \n\n")
+                     print(head(object@alpha))
+                     cat("\n")
+                     cat("@omega: A sparse matrix with the range size of every species \n\n")
+                     print(head(object@omega))
+                     cat("\n")
+                     cat("@dispersion_field: A sparse with the set of ranges of all species that occur in at each locality \n\n")
+                     print(head(object@omega))
+
+                   })
+
+
 #' Show information in setA class \pkg{bam}.
 #' @importFrom methods new
 #' @param object An object of class setA

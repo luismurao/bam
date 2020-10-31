@@ -138,3 +138,39 @@ csd <- methods::setClass(Class = "csd",
 
 
 
+
+#setClassUnion("sparse_or_matrix", c("dgeMatrix", "matrix"))
+
+
+#' Class  \code{bioindex_sparse}
+#' @aliases biodiversity_index_sparse
+#' @author Luis Osorio-Olvera & Jorge Soberón
+#' @slot alpha A sparse matrix with the richness of species per site
+#' @slot omega A sparse matrix with the range size of every species
+#' @slot dispersion_field A sparse matrix with the set of ranges of all species that occur in at each locality
+#' @exportClass bioindex
+#' @export
+
+bioindex_sparse <- methods::setClass(Class = "bioindex_sparse",
+                              representation (
+                                alpha = "dgeMatrix",
+                                omega = "dgeMatrix",
+                                dispersion_field = "dgeMatrix"
+                              ))
+
+
+#' Class  \code{bioindex}
+#' @aliases biodiversity_index
+#' @author Luis Osorio-Olvera & Jorge Soberón
+#' @slot alpha A matrix with the richness of species per site
+#' @slot omega A matrix with the range size of every species
+#' @slot dispersion_field A matrix with the set of ranges of all species that occur in at each locality
+#' @exportClass bioindex
+#' @export
+
+bioindex <- methods::setClass(Class = "bioindex",
+                                     representation (
+                                       alpha = "matrix",
+                                       omega = "matrix",
+                                       dispersion_field = "matrix"
+                                     ))
