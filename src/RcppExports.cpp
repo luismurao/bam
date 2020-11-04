@@ -30,10 +30,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// null_dispersion_field_cat
+Rcpp::NumericVector null_dispersion_field_cat(Rcpp::NumericMatrix dfield, Rcpp::NumericMatrix dfield_rand, double lower_interval, double upper_interval);
+RcppExport SEXP _bam_null_dispersion_field_cat(SEXP dfieldSEXP, SEXP dfield_randSEXP, SEXP lower_intervalSEXP, SEXP upper_intervalSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type dfield(dfieldSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type dfield_rand(dfield_randSEXP);
+    Rcpp::traits::input_parameter< double >::type lower_interval(lower_intervalSEXP);
+    Rcpp::traits::input_parameter< double >::type upper_interval(upper_intervalSEXP);
+    rcpp_result_gen = Rcpp::wrap(null_dispersion_field_cat(dfield, dfield_rand, lower_interval, upper_interval));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_bam_rList", (DL_FUNC) &_bam_rList, 2},
     {"_bam_permute_matrix", (DL_FUNC) &_bam_permute_matrix, 2},
+    {"_bam_null_dispersion_field_cat", (DL_FUNC) &_bam_null_dispersion_field_cat, 4},
     {NULL, NULL, 0}
 };
 

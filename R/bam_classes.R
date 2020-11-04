@@ -174,3 +174,38 @@ bioindex <- methods::setClass(Class = "bioindex",
                                        omega = "matrix",
                                        dispersion_field = "matrix"
                                      ))
+
+
+#' Class  \code{diversity_range}
+#' @aliases diversityrange
+#' @author Luis Osorio-Olvera & Jorge Soberón
+#' @slot alpha A coulmn vector with species richness per site
+#' @slot omega A coulmn vector with the size of the area of distribution per species.
+#' @slot alpha_raster Species richness in raster format.
+#' @slot dispersion_field A matrix with the set of ranges of all species that occur in at each locality.
+#' @slot dispersion_field_raster Raster object with the observed values of dispersion field.
+#' @slot diversity_range_raster Raster object of diversity range.
+#' @slot diversity_range_colors Colors to plot endemism levels.
+#' @slot null_dispersion_field_dist A matrix whith dispersion field null distribution.
+#' @slot xy_coordinates A matrix of geographical coordinates
+#' @slot n_iterations Number of iterations used to estimate the dispersion field null distribution.
+#' @slot nsps Number of species in the PAM.
+#' @slot nsites Number of sites in the PAM.
+#' @exportClass diversity_range
+#' @export
+
+diversity_range <- methods::setClass(Class = "diversity_range",
+                              representation (
+                                alpha = "matrix",
+                                omega = "matrix",
+                                alpha_raster = "RasterLayer",
+                                dispersion_field = "matrix",
+                                dispersion_field_raster ="RasterLayer",
+                                diversity_range_raster ="RasterLayer",
+                                diversity_range_colors ="character",
+                                null_dispersion_field_dist ="matrix",
+                                xy_coordinates = "matrix",
+                                n_iterations = "numeric",
+                                nsps ="numeric",
+                                nsites = "numeric"
+                              ))

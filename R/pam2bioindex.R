@@ -20,6 +20,10 @@
 #' @useDynLib bam
 
 pam2bioindex <- function(pam,biodiv_index="dispersion_field",as_sparse=FALSE) {
+
+  if(is.matrix(is.data.frame(pam))){
+    pam <- as.matrix(pam)
+  }
   if(is.matrix(pam)){
     pam <- Matrix::Matrix(pam, sparse = TRUE)
   }
