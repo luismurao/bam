@@ -92,13 +92,13 @@ methods::setMethod(f = "show",
                      cat("Object of class bioindex it contains",
                          length(slotsin),"slots: \n\n")
                      cat("@alpha: A sparse matrix with the richness of species per site \n\n")
-                     print(head(object@alpha))
+                     print(object@alpha,6)
                      cat("\n")
                      cat("@omega: A sparse matrix with the range size of every species \n\n")
-                     print(head(object@omega))
+                     print(object@omega,6)
                      cat("\n")
                      cat("@dispersion_field: A sparse with the set of ranges of all species that occur in at each locality \n\n")
-                     print(head(object@omega))
+                     print(object@omega,6)
 
                    })
 
@@ -136,6 +136,135 @@ methods::setMethod(f = "show",
                        print(head(object@eigen_vec))
                    })
 
+
+#' Show information in diversity_range class \pkg{bam}.
+#' @importFrom methods new
+#' @param object An object of class diversity_range
+#' @rdname show
+#' @export
+
+methods::setMethod(f = "show",
+                   signature = "diversity_range",
+                   function(object) {
+                     slotsin <- methods::slotNames(object)
+                     cat("diversity_range object it contains",
+                         length(slotsin),"slots \n\n")
+
+
+                     cat("@alpha: A comun vector with values of alpha diversity",
+                         "\n\n")
+                     print(head(object@alpha))
+
+                     cat("@alpha_raster: Alpha diversity raster",
+                         "\n\n")
+                     print(object@alpha_raster)
+                     cat("@dispersion_field: A comun vector with values of dispersion field",
+                         "\n\n")
+                     print(head(object@dispersion_field))
+                     cat("@dispersion_field_raster: Dispersion field raster",
+                         "\n\n")
+                     print(object@dispersion_field_raster)
+                     cat("@null_dispersion_field_dist: null dispersion field distribution",
+                         "\n\n")
+                     if(ncol(object@null_dispersion_field_dist)>=2){
+                       print(head(object@null_dispersion_field_dist[1:2,1:2]))
+                     }
+
+                     cat("@diversity_range_raster: Raster with diversity range categories",
+                         "\n\n")
+                     print(object@diversity_range_raster)
+                     cat("@xy_coordinates: Geographical coordinates of the sites",
+                         "\n\n")
+                     print(head(object@xy_coordinates))
+
+                   })
+
+
+#' Plot method for objects of class diversity_range \pkg{bam}.
+#' @importFrom methods new
+#' @param x An object of class diversity_range
+
+#' @param plot_type Plot type: possible options: "diversity_range" (range-diversity plot),
+#'                  "diversity_range_map" (a raster map with diversity_range categories),
+#'                  "alpha" (a raster mapa with alpha diversity values),
+#'                  "dispersion_field" (a raster with dispersion field)
+#' @param legend Logical. If TRUE the legend of the categorical diversity range values will appear.
+#' @param legend_position Lengend position.
+#' @param xlab x label
+#' @param ylab y label
+#' @param col Plot colors.
+#' @param pch Patch type.
+#' @param ... Graphical parameters. Any argument that can be passed to base plot,
+#'            such as axes=FALSE, main='title', ylab='latitude'.
+#' @rdname plot
+#' @export
+
+methods::setMethod(f = "plot",
+                   signature = c(x="diversity_range"),
+                   function(x,xlab=NULL,plot_type="diversity_range",legend=TRUE,
+                            legend_position = "bottomright",
+                            ylab=NULL,col=NULL,pch=NULL,...) {
+                     if(inherits(x, 'diversity_range')){
+                       slotsin <- methods::slotNames(x)
+                       nsites <- nrow(x@dispersion_field)
+                       nsps <- x@nsps
+                       if(nsites>0){
+                         cols <- c("#000000","#F6BDC0",
+                                   "#F07470","#BBDFFA",
+                                   "#DC1C13","#6987D5",
+                                   "#1727AE")
+
+                         names(cols) <- c("Random","HE/LR",
+                                          "HE/IR","LE/LR",
+                                          "HE/HR","LE/IR",
+                                          "LE/HR")
+                         COLORES<- cols
+                         COLORES <- COLORES[c(1:3,5,4,6,7)]
+                         if(is.null(pch)){
+                           pch <- 19
+                         }
+
+                         if("diversity_range" %in% plot_type){
+                           alpha_norm <- x@alpha/nsps
+                           dispersion_field <- x@dispersion_field/nsites
+                           if(is.null(col)){
+                             col <- x@diversity_range_colors
+                           }
+                           if(is.null(xlab)){
+                             xlab <- expression(alpha)
+                           }
+                           if(is.null(ylab)){
+                             ylab <- "Dispersion field"
+                           }
+                           plot(alpha_norm,dispersion_field,xlab=xlab,ylab=ylab,pch=pch,col=col,...)
+                           if(legend){
+                             graphics::legend(legend_position,
+                                              legend = names(COLORES),
+                                              pch =pch,
+                                              col = COLORES,bty = "n",...)
+                           }
+                         }
+
+                         if("alpha" %in% plot_type && raster::hasValues(x@alpha_raster)){
+                           raster::plot(x@alpha_raster,...)
+                         }
+                         if("dispersion_field" %in% plot_type && raster::hasValues(x@dispersion_field_raster)){
+                           raster::plot(x@dispersion_field_raster,...)
+                         }
+                         if("diversity_range_map" %in% plot_type && raster::hasValues(x@diversity_range_raster)){
+                           raster::plot(x@diversity_range_raster,...)
+                           if(legend){
+                             graphics::legend(legend_position,legend = names(COLORES),
+                                              pch=15,col = COLORES,bty = "n",...)
+                           }
+
+
+                         }
+                       }
+
+                     }
+
+                   })
 
 #' Predict method of the package \pkg{bam}.
 #' @aliases predict bam-method predict

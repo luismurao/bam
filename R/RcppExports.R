@@ -9,3 +9,7 @@ permute_matrix <- function(m, niter) {
     .Call('_bam_permute_matrix', PACKAGE = 'bam', m, niter)
 }
 
+null_dispersion_field_cat <- function(dfield, dfield_rand, lower_interval = 0.05, upper_interval = 0.95) {
+    .Call('_bam_null_dispersion_field_cat', PACKAGE = 'bam', dfield, dfield_rand, lower_interval, upper_interval)
+}
+

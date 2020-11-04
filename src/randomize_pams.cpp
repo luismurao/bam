@@ -161,3 +161,60 @@ Rcpp::NumericMatrix permute_matrix(Rcpp::NumericMatrix m, int niter){
   Rcpp::NumericMatrix m1 = fill_matrix(m,sps);
   return m1;
 }
+
+
+Rcpp::NumericVector Quantile(Rcpp::NumericVector x, Rcpp::NumericVector probs) {
+  // implementation of type 7
+  const size_t n=x.size(), np=probs.size();
+  if (n==0) return x;
+  if (np==0) return probs;
+  Rcpp::NumericVector index = (n-1.)*probs, y=x.sort(), x_hi(np), qs(np);
+  Rcpp::NumericVector lo = Rcpp::floor(index), hi = Rcpp::ceiling(index);
+
+  for (size_t i=0; i<np; ++i) {
+    qs[i] = y[lo[i]];
+    x_hi[i] = y[hi[i]];
+    if ((index[i]>lo[i]) && (x_hi[i] != qs[i])) {
+      double h;
+      h = index[i]-lo[i];
+      qs[i] = (1.-h)*qs[i] + h*x_hi[i];
+    }
+  }
+  return qs;
+}
+
+
+
+// Function to permute a categorize the null dispersion distribution
+
+// @param dfield A matrix with entries representing the observed values of dispersion field.
+// @param dfield_rand A matrix with columns representing random dispersion field distribution
+// @param lower_interval Lower value of the distrbution
+// @param upper_interval Upper value of the distrbution
+// @resturn A categorical vector
+// [[Rcpp::export(null_dispersion_field_cat)]]
+
+Rcpp::NumericVector null_dispersion_field_cat(Rcpp::NumericMatrix dfield,
+                                              Rcpp::NumericMatrix dfield_rand,
+                                              double lower_interval = 0.05,
+                                              double upper_interval = 0.95){
+  //qqq=Quantile(pam_vals[h,],prob=1:20/20);
+  int nrows = dfield_rand.nrow();
+  //int ncols = dfield_rand.ncol();
+  Rcpp::NumericVector dfield_cat(nrows);
+  NumericVector probs = {lower_interval,upper_interval};
+  for(int i=0; i< nrows; i++){
+    Rcpp::NumericVector dfield_i = dfield_rand.row(i);
+    NumericVector q_distfield = Quantile(dfield_i,probs= probs);
+    double dfield_val = dfield.row(i)[0];
+    if(dfield_val <=q_distfield[0]){
+      dfield_cat[i] =1;
+    }
+    if(dfield_val>=q_distfield[1]){
+      dfield_cat[i] =3;
+    }
+
+  }
+  return dfield_cat;
+}
+

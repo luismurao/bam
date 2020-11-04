@@ -13,8 +13,7 @@
 #' model <- raster::raster(model_path)
 #' model <- model > 0.7
 #' csd_plot <- csd_estimate(model,
-#'                          dispersal_steps=c(2,4,8,16,32,45),
-#'                          plot=TRUE)
+#'                          dispersal_steps=c(2,4,8,16,32,45))
 #'
 #'
 #' }
