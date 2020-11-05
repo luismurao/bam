@@ -151,20 +151,30 @@ methods::setMethod(f = "show",
                          length(slotsin),"slots \n\n")
 
 
-                     cat("@alpha: A comun vector with values of alpha diversity",
+                     cat("@alpha: A comun vector of size ",object@nsites,
+                         " with values of alpha diversity at each site",
                          "\n\n")
                      print(head(object@alpha))
 
                      cat("@alpha_raster: Alpha diversity raster",
                          "\n\n")
                      print(object@alpha_raster)
-                     cat("@dispersion_field: A comun vector with values of dispersion field",
+
+                     cat("@omega: A comun vector of size ",object@nsps,
+                         " with the range size of each species",
+                         "\n\n")
+                     print(head(object@omega))
+                     cat("@dispersion_field: A column vector of size ",object@nsites ,
+                         "with values of dispersion field at each site",
                          "\n\n")
                      print(head(object@dispersion_field))
                      cat("@dispersion_field_raster: Dispersion field raster",
                          "\n\n")
                      print(object@dispersion_field_raster)
-                     cat("@null_dispersion_field_dist: null dispersion field distribution",
+                     cat("@null_dispersion_field_dist: null dispersion field distribution. ")
+                     cat("It is matrix of\n n =",object@nsites,"sites x","m =",
+                         object@n_iterations, "simulations",
+                         "used to generate random values of dispersion field" ,
                          "\n\n")
                      if(ncol(object@null_dispersion_field_dist)>=2){
                        print(head(object@null_dispersion_field_dist[1:2,1:2]))
@@ -178,6 +188,9 @@ methods::setMethod(f = "show",
                      print(head(object@xy_coordinates))
 
                    })
+
+
+if (!isGeneric("plot")) {setGeneric("plot", function(x,y,...)standardGeneric("plot"))}
 
 
 #' Plot method for objects of class diversity_range \pkg{bam}.
@@ -206,9 +219,12 @@ methods::setMethod(f = "plot",
                             legend_position = "bottomright",
                             ylab=NULL,col=NULL,pch=NULL,pch_legend=19,...) {
                      if(inherits(x, 'diversity_range')){
-                       slotsin <- methods::slotNames(x)
-                       nsites <- nrow(x@dispersion_field)
+                       #slotsin <- methods::slotNames(x)
+                       #zeros_alpha <- which(x@alpha ==0)
+                       #zeros_disperfield <- which(x@dispersion_field==0)
+                       nsites <- x@nsites
                        nsps <- x@nsps
+
                        if(nsites>0){
                          #cols <- c("#000000","#F6BDC0",
                          #         "#F07470","#BBDFFA",
@@ -237,21 +253,18 @@ methods::setMethod(f = "plot",
                            betty <- round(1/mean(alpha_st),3);
                            fistprom <-x@dispersion_field/x@alpha;
                            rho  <-alpha_st*(fistprom-1/betty);
-                           am <- min(alpha_st);
-                           aM <- max(alpha_st);
-                           fm <- min(x@dispersion_field)/nsites
-                           fM <- max(x@dispersion_field)/nsites;
+                           am <- min(alpha_st)
+                           aM <- max(alpha_st)
+                           fm <- min(x@dispersion_field,na.rm = T)/nsites
+                           fM <- max(x@dispersion_field,na.rm =T)/nsites
 
-                           rhom  <- min(rho);
-                           rhoM <- max(rho);
+                           rhom  <- min(rho,na.rm = T)
+                           rhoM <- max(rho,na.rm = T)
 
                            vx <- c(am,aM,aM,am)
 
-                           vy <- c(rhom+am/betty,rhom+aM/betty,rhoM+aM/betty,rhoM+am/betty)
-
-
-
-
+                           vy <- c(rhom+am/betty,rhom+aM/betty,
+                                   rhoM+aM/betty,rhoM+am/betty)
 
                            if(is.null(col)){
                              col <- x@diversity_range_colors
@@ -262,14 +275,14 @@ methods::setMethod(f = "plot",
                            if(is.null(ylab)){
                              ylab <- "Dispersion field"
                            }
-                           xmin1<- 1.1*min(vx)
-                           xmax1 <- 1.1*max(vx)
-                           ymin1 <- 1.1*min(vy)
-                           ymax1 <- 1.1*max(vy)
+                           xmin1<- 0.97*min(vx)
+                           xmax1 <- 1.03*max(vx)
+                           ymin1 <- 0.97*min(vy)
+                           ymax1 <- 1.03*max(vy)
                            plot(alpha_norm,dispersion_field,xlim=c(xmin1,xmax1),
                                 ylim=c(ymin1,ymax1),
                                 xlab=xlab,ylab=ylab,pch=pch,col=col,...)
-                           lines(polygon(vx,vy));
+                           graphics::lines(graphics::polygon(vx,vy));
                            if(legend){
                              graphics::legend(legend_position,
                                               legend = names(COLORES),
@@ -281,10 +294,12 @@ methods::setMethod(f = "plot",
                          if("alpha" %in% plot_type && raster::hasValues(x@alpha_raster)){
                            raster::plot(x@alpha_raster,...)
                          }
-                         if("dispersion_field" %in% plot_type && raster::hasValues(x@dispersion_field_raster)){
+                         if("dispersion_field" %in% plot_type &&
+                            raster::hasValues(x@dispersion_field_raster)){
                            raster::plot(x@dispersion_field_raster,...)
                          }
-                         if("diversity_range_map" %in% plot_type && raster::hasValues(x@diversity_range_raster)){
+                         if("diversity_range_map" %in% plot_type &&
+                            raster::hasValues(x@diversity_range_raster)){
                            if(is.null(col)){
                              col <- x@diversity_range
                            }
@@ -296,8 +311,14 @@ methods::setMethod(f = "plot",
                              graphics::legend(legend_position,legend = names(COLORES),
                                               pch=15,col = COLORES,bty = "n",...)
                            }
+                         }
+                         if("diversity_range_map" %in% plot_type &&
+                            !raster::hasValues(x@diversity_range_raster) &&
+                            nrow(x@xy_coordinates) == nsites){
 
-
+                           plot(x@xy_coordinates,col=x@diversity_range_colors,pch=15)
+                           graphics::legend("bottomleft",legend = names(COLORES),
+                                            pch=15,col = COLORES,bty = "n")
                          }
                        }
 
