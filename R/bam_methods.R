@@ -151,7 +151,7 @@ methods::setMethod(f = "show",
                          length(slotsin),"slots \n\n")
 
 
-                     cat("@alpha: A comun vector of size ",object@nsites,
+                     cat("@alpha: A column vector of size ",object@nsites,
                          " with values of alpha diversity at each site",
                          "\n\n")
                      print(head(object@alpha))
@@ -225,7 +225,7 @@ methods::setMethod(f = "plot",
                        nsites <- x@nsites
                        nsps <- x@nsps
 
-                       if(nsites>0){
+                       if(x@nsites>0){
                          #cols <- c("#000000","#F6BDC0",
                          #         "#F07470","#BBDFFA",
                           #         "#DC1C13","#6987D5",
