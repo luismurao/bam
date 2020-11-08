@@ -160,7 +160,7 @@ methods::setMethod(f = "show",
                          "\n\n")
                      print(object@alpha_raster)
 
-                     cat("@omega: A comun vector of size ",object@nsps,
+                     cat("@omega: A column vector of size ",object@nsps,
                          " with the range size of each species",
                          "\n\n")
                      print(head(object@omega))

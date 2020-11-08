@@ -196,8 +196,8 @@ Rcpp::NumericVector Quantile(Rcpp::NumericVector x, Rcpp::NumericVector probs) {
 
 Rcpp::NumericVector null_dispersion_field_cat(Rcpp::NumericMatrix dfield,
                                               Rcpp::NumericMatrix dfield_rand,
-                                              double lower_interval = 0.05,
-                                              double upper_interval = 0.95){
+                                              double lower_interval,
+                                              double upper_interval){
   //qqq=Quantile(pam_vals[h,],prob=1:20/20);
   int nrows = dfield_rand.nrow();
   //int ncols = dfield_rand.ncol();
