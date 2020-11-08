@@ -190,7 +190,7 @@ methods::setMethod(f = "show",
                    })
 
 
-if (!isGeneric("plot")) {setGeneric("plot", function(x,y,...)standardGeneric("plot"))}
+#if (!isGeneric("plot")) {setGeneric("plot", function(x,y,...)standardGeneric("plot"))}
 
 
 #' Plot method for objects of class diversity_range \pkg{bam}.
@@ -294,19 +294,22 @@ methods::setMethod(f = "plot",
                          if("alpha" %in% plot_type && raster::hasValues(x@alpha_raster)){
                            raster::plot(x@alpha_raster,...)
                          }
+
                          if("dispersion_field" %in% plot_type &&
                             raster::hasValues(x@dispersion_field_raster)){
                            raster::plot(x@dispersion_field_raster,...)
                          }
+
                          if("diversity_range_map" %in% plot_type &&
                             raster::hasValues(x@diversity_range_raster)){
                            if(is.null(col)){
-                             col <- x@diversity_range
+                             col1 <- cols
                            }
                            else{
-                             col <- rev(grDevices::terrain.colors(256))
+                             col1 <- rev(grDevices::terrain.colors(7))
                            }
-                           raster::plot(x@diversity_range_raster,col=col,legend=FALSE,...)
+                           randiv <- x@diversity_range_raster
+                           raster::plot(randiv,col=col1,legend=FALSE,...)
                            if(legend){
                              graphics::legend(legend_position,legend = names(COLORES),
                                               pch=15,col = COLORES,bty = "n",...)

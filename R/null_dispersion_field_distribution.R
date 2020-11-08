@@ -47,6 +47,8 @@ null_dispersion_field_distribution <- function(pam,n_iter=10,parallel=TRUE,n_cor
     y=data.frame(dfield =distfield@dispersion_field)
     return(y)
   },.progress = T)
+  plan(sequential)
+
   distfield_rand <- data.matrix(distfield_rand)
   colnames(distfield_rand) <- nms
   return(distfield_rand)

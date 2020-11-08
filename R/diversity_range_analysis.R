@@ -56,7 +56,7 @@ diversity_range_analysis <- function(pam,xy_mat=NULL,lower_interval=0.05,
   disfield_cat <-  null_dispersion_field_cat(dfield = bioind@dispersion_field,
                                              dfield_rand = distfield_rand,
                                              lower_interval=lower_interval,
-                                             upper_interval)
+                                             upper_interval=upper_interval)
 
 
   #cols <- c("#000000","#F6BDC0",
