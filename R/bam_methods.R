@@ -208,8 +208,10 @@ methods::setMethod(f = "show",
 #' @param col Plot colors.
 #' @param pch Patch type.
 #' @param pch_legend Patch type for legends.
-#' @param ... Graphical parameters. Any argument that can be passed to base plot,
-#'            such as axes=FALSE, main='title', ylab='latitude'.
+#' @param radius Size of the patch for the interactive map.
+#' @param ... Graphical parameters. Any argument that can be passed to 1) base::plot,
+#'            such as axes=FALSE, main='title', ylab='latitude' 2) leaflet::leaflet
+#'            or 3)leaflet::addCircleMarkers.
 #' @rdname plot
 #' @export
 
@@ -217,7 +219,7 @@ methods::setMethod(f = "plot",
                    signature = c(x="diversity_range"),
                    function(x,xlab=NULL,plot_type="diversity_range",legend=TRUE,
                             legend_position = "bottomright",
-                            ylab=NULL,col=NULL,pch=NULL,pch_legend=19,...) {
+                            ylab=NULL,col=NULL,pch=NULL,pch_legend=19,radius=0.5,...) {
                      if(inherits(x, 'diversity_range')){
 
                        poptions <- c("diversity_range",
@@ -355,13 +357,14 @@ methods::setMethod(f = "plot",
                                   plotly::highlight('plotly_selected',
                                                     off = 'plotly_deselect',
                                                     dynamic = F,persistent = F),
-                              leaflet::leaflet(diversity,height = 900) %>%
+                              leaflet::leaflet(diversity,height = 900,...) %>%
                                 leaflet::addTiles() %>%
                                 leaflet::addCircleMarkers(
+                                  radius = radius,
                                   lng = ~Longitude,
                                   lat = ~Latitude,
                                   fillColor = ~col,
-                                  color = ~col,opacity = 0.9) %>%
+                                  color = ~col,opacity = 0.9,...) %>%
                                 plotly::highlight('plotly_click',selectize=F,
                                           off = 'plotly_deselect',
                                           dynamic = F,persistent = F)

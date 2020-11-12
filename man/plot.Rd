@@ -14,6 +14,7 @@
   col = NULL,
   pch = NULL,
   pch_legend = 19,
+  radius = 0.5,
   ...
 )
 }
@@ -39,8 +40,11 @@
 
 \item{pch_legend}{Patch type for legends.}
 
-\item{...}{Graphical parameters. Any argument that can be passed to base plot,
-such as axes=FALSE, main='title', ylab='latitude'.}
+\item{radius}{Size of the patch for the interactive map.}
+
+\item{...}{Graphical parameters. Any argument that can be passed to 1) base::plot,
+such as axes=FALSE, main='title', ylab='latitude' 2) leaflet::leaflet
+or 3)leaflet::addCircleMarkers.}
 }
 \description{
 Plot method for objects of class diversity_range \pkg{bam}.
