@@ -40,6 +40,8 @@ RdMacros: Rdpack
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
+    crosstalk,
+    plotly,
     rmarkdown
 VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppArmadillo

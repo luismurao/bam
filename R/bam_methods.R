@@ -219,6 +219,17 @@ methods::setMethod(f = "plot",
                             legend_position = "bottomright",
                             ylab=NULL,col=NULL,pch=NULL,pch_legend=19,...) {
                      if(inherits(x, 'diversity_range')){
+
+                       poptions <- c("diversity_range",
+                                     "diversity_range_interactive",
+                                     "alpha","dispersion_field",
+                                     "dispersion_field_map")
+
+                       if(!any(poptions %in% plot_type)){
+                         stop(paste('plot_type should be one of the following',
+                                    'options:',paste0('"',poptions,'"',
+                                                     collapse = ", ")))
+                       }
                        #slotsin <- methods::slotNames(x)
                        #zeros_alpha <- which(x@alpha ==0)
                        #zeros_disperfield <- which(x@dispersion_field==0)
@@ -246,13 +257,14 @@ methods::setMethod(f = "plot",
                            pch <- 19
                          }
 
-                         if("diversity_range" %in% plot_type){
+                         if(plot_type %in% c("diversity_range",
+                              "diversity_range_interactive")){
                            alpha_norm <- x@alpha/nsps
                            dispersion_field <- x@dispersion_field/nsps
                            alpha_st <- x@alpha/x@nsps
-                           betty <- round(1/mean(alpha_st),3);
-                           fistprom <-x@dispersion_field/x@alpha;
-                           rho  <-alpha_st*(fistprom-1/betty);
+                           betty <- round(1/mean(alpha_st),3)
+                           fistprom <-x@dispersion_field/x@alpha
+                           rho  <-alpha_st*(fistprom-1/betty)
                            am <- min(alpha_st)
                            aM <- max(alpha_st)
                            fm <- min(x@dispersion_field,na.rm = T)/nsites
@@ -279,16 +291,84 @@ methods::setMethod(f = "plot",
                            xmax1 <- 1.03*max(vx)
                            ymin1 <- 0.97*min(vy)
                            ymax1 <- 1.03*max(vy)
-                           plot(alpha_norm,dispersion_field,xlim=c(xmin1,xmax1),
-                                ylim=c(ymin1,ymax1),
-                                xlab=xlab,ylab=ylab,pch=pch,col=col,...)
-                           graphics::lines(graphics::polygon(vx,vy));
-                           if(legend){
-                             graphics::legend(legend_position,
-                                              legend = names(COLORES),
-                                              pch =pch_legend,
-                                              col = COLORES,bty = "n",...)
+                           if("diversity_range" == plot_type){
+                             plot(alpha_norm,dispersion_field,xlim=c(xmin1,xmax1),
+                                  ylim=c(ymin1,ymax1),
+                                  xlab=xlab,ylab=ylab,pch=pch,col=col,...)
+                             graphics::lines(graphics::polygon(vx,vy));
+                             if(legend){
+                               graphics::legend(legend_position,
+                                                legend = names(COLORES),
+                                                pch =pch_legend,
+                                                col = COLORES,bty = "n",...)
+                             }
                            }
+                           else{
+                             Longitude <- x@xy_coordinates[,1]
+                             Latitude <-  x@xy_coordinates[,2]
+                             labs <- as.factor(x@diversity_range_colors)
+                             levels(labs) <- c("Random","LE/HR",
+                                               "HE/IR","LE/LR",
+                                               "HE/HR","LE/IR",
+                                               "HE/LR")
+                             cols <- c(grDevices::rgb(165/255,170/255,153/255),#1
+                                       grDevices::rgb(229/255,134/255,6/255), #2
+                                       grDevices::rgb(93/255,105/255,177/255), #
+                                       grDevices::rgb(204/255,97/255,176/255), #
+                                       grDevices::rgb(153/255,201/255,69/255), #5
+                                       grDevices::rgb(218/255,165/255,27/255), #6
+                                       grDevices::rgb(237/255,100/255,90/255)) #7
+
+
+                             div1 <- data.frame(alpha=alpha_norm,
+                                                dispersion_field,
+                                                Longitude,
+                                                Latitude,
+                                                labs=as.character(labs),
+                                                col=as.character(labs))
+                             div1$col <- as.factor(div1$labs)
+                             levels(div1$col) <- cols[c(7,2,6,5,4,3,1)]
+                             div1$col <- as.character(div1$col)
+                             diversity <- crosstalk::SharedData$new(div1)
+
+                            p1 <-  crosstalk::bscols(
+                              plotly::plot_ly() %>%
+                                  plotly::add_trace(
+                                    data=diversity, x = ~alpha,
+                                    y = ~dispersion_field,
+                                    type="scatter",
+                                    mode="markers",
+                                    #marker= list(split=cols[c(7,2,6,5,4,3,1)]),
+                                    #split = ~labs,
+                                    color = ~labs,
+                                    colors = cols[c(7,2,6,5,4,3,1)],
+                                    inherit = T
+                                  )  %>%
+                                plotly::add_polygons(x=c(vx,vx[1]),
+                                                     y=c(vy,vy[1]),
+                                                     #name = paste0("Cluster ",1),
+                                                     line=list(width=2,color="black"),
+                                                     fillcolor='transparent',
+                                                     hoverinfo = "none",
+                                                     showlegend = FALSE,
+                                                     inherit = FALSE) %>%
+                                  plotly::highlight('plotly_selected',
+                                                    off = 'plotly_deselect',
+                                                    dynamic = F,persistent = F),
+                              leaflet::leaflet(diversity,height = 900) %>%
+                                leaflet::addTiles() %>%
+                                leaflet::addCircleMarkers(
+                                  lng = ~Longitude,
+                                  lat = ~Latitude,
+                                  fillColor = ~col,
+                                  color = ~col,opacity = 0.9) %>%
+                                plotly::highlight('plotly_click',selectize=F,
+                                          off = 'plotly_deselect',
+                                          dynamic = F,persistent = F)
+                            )
+                             print(p1)
+                           }
+
                          }
 
                          if("alpha" %in% plot_type && raster::hasValues(x@alpha_raster)){
