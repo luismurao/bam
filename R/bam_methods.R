@@ -224,6 +224,7 @@ methods::setMethod(f = "plot",
 
                        poptions <- c("diversity_range",
                                      "diversity_range_interactive",
+                                     "diversity_range_map",
                                      "alpha","dispersion_field",
                                      "dispersion_field_map")
 
