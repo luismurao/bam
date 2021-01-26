@@ -59,7 +59,7 @@ adj_mat <- function(modelsparse,ngbs=1,eigen_sys=FALSE,which_eigs=1){
 
   #Matrix::diag(m_ad1) <- 1
 
-  g_set0 <- setM(adj_matrix = m_ad1,
+  g_set0 <- setM(adj_matrix = m_ad1,ngbs =ngbs,
                  coordinates = modelsparse@coordinates)
 
   if(eigen_sys){

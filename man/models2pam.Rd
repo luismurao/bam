@@ -24,7 +24,7 @@ lagos_path <- system.file("extdata/conejos",
 enm_path <- list.files(lagos_path,
                        pattern = ".tif",
                        full.names = TRUE)
-en_models <- raster::stack(enm_path)
-pam <- pam::models2pam(en_models,sparse=FALSE)
+en_models <- raster::stack(enm_path) >0.01
+pam <- bam::models2pam(en_models,sparse=FALSE)
 }
 }

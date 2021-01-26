@@ -31,14 +31,13 @@ models2pam <- function(mods_stack,sparse=TRUE){
         m2 <- m1[]
         m3 <- m2[cellIDs]
         df1 <- data.frame(m3)
-        df1 <-setNames(df1,names(m1))
+        df1 <- stats::setNames(df1,names(m1))
         return(df1)
       })
       pam0 <- data.matrix(pam0)
       return(pam0)
     }
     else{
-
       pamL <- 1:nsps %>% purrr::map(function(x){
         m1 <- mods_stack[[x]]
         m2 <- m1[]
@@ -46,7 +45,7 @@ models2pam <- function(mods_stack,sparse=TRUE){
         unosIDs <- which(m3==1)
         msparse0 <- Matrix::sparseVector(x = rep(1,length(unosIDs)),
                                          i = unosIDs,
-                                         length=length(msparse@cellIDs))
+                                         length=length(cellIDs))
         return(msparse0)
       })
       pamL <- lapply(pamL, as, "sparseMatrix")

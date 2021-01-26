@@ -47,5 +47,22 @@ pam <- matrix(rbinom(10000,1,0.5),nrow = 100,ncol = 1000)
 rdivan <- diversity_range_analysis(pam=pam,parallel = FALSE,
                                    return_null_dfield=TRUE)
 bam::plot(rdivan,plot_type="diversity_range")
+# Lagomorphos
+lagos_path <- system.file("extdata/conejos",
+                          package = "bam")
+enm_path <- list.files(lagos_path,
+                       pattern = ".tif",
+                       full.names = TRUE)
+en_models <- raster::stack(enm_path) >0.01
+nonas <- which(!is.na(en_models[[1]][]))
+xy_mat <- sp::coordinates(en_models[[1]])[ nonas,]
+pam <- bam::models2pam(en_models,sparse=FALSE)
+rdivan <- diversity_range_analysis(pam=pam,parallel = FALSE,
+                                   xy_mat=xy_mat,
+                                   raster_templete = en_models[[1]],
+                                   return_null_dfield=TRUE)
+bam::plot(rdivan,plot_type="diversity_range")
+bam::plot(rdivan,plot_type="diversity_range_interactive")
+
 }
 }

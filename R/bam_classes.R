@@ -69,7 +69,8 @@ setA <- methods::setClass(Class = "setA",
 setM <- methods::setClass(Class = "setM",
                           contains = "g_area",
                           slots =  c(adj_matrix = "dgCMatrix",
-                                     initial_points = "dgCMatrix"))
+                                     initial_points = "dgCMatrix",
+                                     ngbs = "numeric"))
 
 #' Class  \code{bam} digram
 #' @aliases bam-class
