@@ -87,15 +87,20 @@ sim2Animation <- function(sdm_simul,which_steps,
 
     animation::saveGIF({
       for (i in seq_along(which_steps)) {
-        sdm_st <- sdm_simul@bin_model
+        sdm_st <- sdm_simul@bin_model *0
+        valuess <- sdm_simul@sdm_sim[[which_steps[i]]]
+        no_cero <- .nonzero(valuess)
         sdm_st[sdm_simul@cellIDs] <- sdm_simul@sdm_sim[[which_steps[i]]]
 
         sdm_st <- sdm_simul@bin_model + sdm_st
 
         maxv <- raster::maxValue(sdm_st)
+        if(maxv == 2 && nrow(no_cero)>2) {
+          colores <- c(bg_color,suit_color,occupied_color)
+        } else{
+          colores <- c(bg_color,suit_color)
 
-        if(maxv<1.5) colores <- c(bg_color,suit_color)
-        else colores <- c(bg_color,suit_color,occupied_color)
+        }
 
         graphics::par(xpd = FALSE)
 
@@ -109,7 +114,7 @@ sim2Animation <- function(sdm_simul,which_steps,
         graphics::legend(
           "bottom",
           legend = c("Unsuitable", "Suitable", "Occupied"),
-          fill = colores,
+          fill = c(bg_color,suit_color,occupied_color),
           horiz = TRUE,
           inset = -0.2,
           cex = 0.75,
@@ -129,14 +134,20 @@ sim2Animation <- function(sdm_simul,which_steps,
     dir3 <- gsub("[.]","_",dir3)
     animation::saveHTML({
       for (i in seq_along(which_steps)) {
-        sdm_st <- sdm_simul@bin_model
+        sdm_st <- sdm_simul@bin_model *0
+        valuess <- sdm_simul@sdm_sim[[which_steps[i]]]
+        no_cero <- .nonzero(valuess)
         sdm_st[sdm_simul@cellIDs] <- sdm_simul@sdm_sim[[which_steps[i]]]
 
         sdm_st <- sdm_simul@bin_model + sdm_st
 
         maxv <- raster::maxValue(sdm_st)
-        if(maxv<1.5) colores <- c(bg_color,suit_color)
-        else colores <- c(bg_color,suit_color,occupied_color)
+        if(maxv == 2 && nrow(no_cero)>2) {
+          colores <- c(bg_color,suit_color,occupied_color)
+        } else{
+          colores <- c(bg_color,suit_color)
+
+        }
 
         graphics::par(xpd = FALSE)
 
@@ -150,7 +161,7 @@ sim2Animation <- function(sdm_simul,which_steps,
         graphics::legend(
           "bottom",
           legend = c("Unsuitable", "Suitable", "Occupied"),
-          fill = colores,
+          fill = c(bg_color,suit_color,occupied_color),
           horiz = TRUE,
           inset = -0.2,
           cex = 0.75,
