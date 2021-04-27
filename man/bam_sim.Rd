@@ -9,8 +9,8 @@ bam_sim(
   sp2,
   set_M,
   initial_points,
-  periods_negative,
-  periods_positive,
+  periods_toxic,
+  periods_suitable,
   nsteps,
   progress_bar = TRUE
 )
@@ -26,13 +26,13 @@ See \code{\link[bam]{adj_mat}}}
 \item{initial_points}{A sparse vector returned by the function
 \code{\link[bam]{occs2sparse}}}
 
-\item{periods_negative}{Time periods that sps2 takes to develop defense mechanisms (i.e. toxic).}
-
-\item{periods_positive}{This the time that sp2 takes to become non-toxic}
+\item{periods_toxic}{Time periods that sps2 takes to develop defense mechanisms (i.e. toxic).}
 
 \item{nsteps}{Number of steps to run the simulation}
 
 \item{progress_bar}{Show progress bar}
+
+\item{periods_suitale}{This is the time that sp2 takes to become non-toxic}
 }
 \description{
 bam_sim: Simulate dispersal dynamics using the set B of the BAM framework.
@@ -47,10 +47,11 @@ msparse <- bam::model2sparse(ura)
 init_coordsdf <- data.frame(x=-84.38751, y= 22.02932)
 initial_points <- bam::occs2sparse(modelsparse = msparse,init_coordsdf)
 set_M <- bam::adj_mat(modelsparse = msparse,ngbs = 1)
-ura_sim <- bam_sim(sp1=ura, sp2=omp, set_M=set_M,
-                   initial_points=initial_points,
-                   periods_negative=5,periods_positive=1,
-                   nsteps=40)
+ura_sim <- bam::bam_sim(sp1=ura, sp2=omp, set_M=set_M,
+                        initial_points=initial_points,
+                        periods_toxic=3,
+                        periods_suitable=3,
+                        nsteps=40)
 # Animation example
 anp <-"C:/Users/l916o895/Dropbox/TeoriadeBAM/articulo_bam/ura_omp_sim.gif"
 new_sim <- bam::sim2Animation(sdm_simul = ura_sim,
