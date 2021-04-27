@@ -5,7 +5,7 @@
 #' @param set_M A setM object cointaining the adjacency matrix for sp1.
 #' See \code{\link[bam]{adj_mat}}
 #' @param periods_toxic  Time periods that sps2 takes to develop defense mechanisms (i.e. toxic).
-#' @param periods_suitale This is the time that sp2 takes to become non-toxic
+#' @param periods_suitable This is the time that sp2 takes to become non-toxic
 #' @param initial_points A sparse vector returned by the function
 #' \code{\link[bam]{occs2sparse}}
 #' @param nsteps Number of steps to run the simulation
