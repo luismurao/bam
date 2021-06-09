@@ -51,8 +51,8 @@ bam_sim <- function(sp1,sp2,set_M,initial_points,
   A <- bam::model2sparse(sp1_sp2)
   bin_model <- A@sparse_model
   Matrix::diag(set_M@adj_matrix) <- 1
-  AMA <- A@sparse_model %*% set_M@adj_matrix
-
+  AMA <- A@sparse_model %*% set_M@adj_matrix #%*%  A@sparse_model
+  AMA2 <- AMA
   g0 <- initial_points
   nonzerosL <- list()
   time_mat <- matrix(numeric(length(A@cellIDs)),ncol  = 1)
@@ -65,34 +65,30 @@ bam_sim <- function(sp1,sp2,set_M,initial_points,
                                 max = nsteps,
                                 style = 3)
   }
+
   for(i in 1:nsteps){
-
-    pos <- .nonzero(g0)[,1]
-    time_counter_off[pos, ] <- time_counter_off[pos, ] + 1
-    to_off_vec <- pos[which( time_counter_off[pos, ] == periods_toxic)]
-    pos_on <- .nonzero(time_counter_on)[,1]
-    if(length(to_off_vec)>0L ){
-      Matrix::diag(bin_model)[to_off_vec] <- 0
-      AMA <- bin_model %*% set_M@adj_matrix #%*% bin_model
-      time_counter_off[to_off_vec, ] <- 0
-      if(length(pos_on) == 0L){
-        pos_on <- to_off_vec
-      }
-    }
+    pix_occ <- .nonzero(g0)[,1]
     g0 <- AMA%*%g0
-    if(length(pos_on)>0){
-      time_counter_on[pos_on, ] <- time_counter_on[pos_on, ] + 1
-      to_on_vec <- pos_on[which( time_counter_on[pos_on, ] == periods_suitable)]
-      if(length(to_on_vec)>0L){
-        Matrix::diag(bin_model)[to_on_vec] <- 1
-        AMA <- bin_model %*% set_M@adj_matrix # %*% bin_model
-        time_counter_on[to_on_vec,] <- 0
-      }
-    }
-
     g0[g0>1] <- 1
+    time_counter_off[pix_occ, ] <- time_counter_off[pix_occ, ] + 1
+    to_off_vec <- pix_occ[which( time_counter_off[pix_occ, ] >=   periods_toxic)]
+    time_onID <- .nonzero(time_counter_on)[,1]
+
+    if(length(to_off_vec)>0L){
+      g0[to_off_vec] <- 0
+      Matrix::diag(bin_model)[to_off_vec] <- 0
+      AMA <- bin_model %*% set_M@adj_matrix
+      time_counter_off[to_off_vec, ] <- 0
+      time_onID <- c(time_onID,to_off_vec)
+    }
+    time_counter_on[time_onID, ] <- time_counter_on[time_onID, ]  + 1
+    to_on_vec <- time_onID[which( time_counter_on[time_onID, ] >= periods_suitable)]
+    if(length(to_on_vec)>0L){
+      Matrix::diag(bin_model)[to_on_vec] <- 1
+      AMA <- bin_model %*% set_M@adj_matrix
+      time_counter_on[to_on_vec,] <- 0
+    }
     sdm[[i+1]] <- g0
-    #cat("\nDoing step ",i, "of ",nsteps,"\n")
     if(progress_bar){
       utils::setTxtProgressBar(pb, i)
     }
