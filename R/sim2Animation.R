@@ -70,7 +70,7 @@ sim2Animation <- function(sdm_simul,which_steps,
   dir2 <- paste0(dir1[1:(length(dir1)-1)],collapse = '/')
   dir2 <- gsub("[\\]","/",dir2)
 
-
+  which_steps <- c(0,which_steps)
   titles <- paste("Simulation step:",which_steps)
   if(!is.null(extra_legend)){
     titles <- paste(titles,paste(extra_legend,collapse = "; "),
@@ -80,10 +80,13 @@ sim2Animation <- function(sdm_simul,which_steps,
   pb <- utils::txtProgressBar(min = 0,
                               max = length(which_steps),
                               style = 3)
+  which_steps <- which_steps + 1
   if(fmt == "GIF"){
     animation::ani.options(ani.width = ani.width,
                            ani.height = ani.height,
                            ani.res = ani.res)
+
+
 
     animation::saveGIF({
       for (i in seq_along(which_steps)) {
@@ -95,11 +98,17 @@ sim2Animation <- function(sdm_simul,which_steps,
         sdm_st <- sdm_simul@bin_model + sdm_st
 
         maxv <- raster::maxValue(sdm_st)
-        if(maxv == 2 && nrow(no_cero)>2) {
+        minv <- raster::minValue(sdm_st)
+        if(maxv ==1  && minv == 1){
+          colores <- suit_color
+        } else if(maxv == 2 && minv == 2){
+          colores <- occupied_color
+        } else if(maxv == 2 && minv != 0) {
+          colores <- c(suit_color,occupied_color)
+        } else if((maxv == 2 && nrow(no_cero)>2) || (maxv == 2 && minv==0) ){
           colores <- c(bg_color,suit_color,occupied_color)
         } else{
           colores <- c(bg_color,suit_color)
-
         }
 
         graphics::par(xpd = FALSE)
@@ -142,17 +151,23 @@ sim2Animation <- function(sdm_simul,which_steps,
         sdm_st <- sdm_simul@bin_model + sdm_st
 
         maxv <- raster::maxValue(sdm_st)
-        if(maxv == 2 && nrow(no_cero)>2) {
+        minv <- raster::minValue(sdm_st)
+        if(maxv ==1  && minv == 1){
+          colores <- suit_color
+        } else if(maxv == 2 && minv == 2){
+          colores <- occupied_color
+        } else if(maxv == 2 && minv != 0) {
+          colores <- c(suit_color,occupied_color)
+        } else if((maxv == 2 && nrow(no_cero)>2) || (maxv == 2 && minv==0) ){
           colores <- c(bg_color,suit_color,occupied_color)
         } else{
           colores <- c(bg_color,suit_color)
-
         }
-
         graphics::par(xpd = FALSE)
 
 
-        raster::plot(sdm_st,main=titles[i],
+        raster::plot(sdm_st,
+                     main=titles[i],
                      col=colores,legend=FALSE,
                      xaxt = 'n',
                      yaxt = 'n')
