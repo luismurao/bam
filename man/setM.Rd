@@ -12,11 +12,15 @@ Class for the M set of the \code{bam} digram
 \section{Slots}{
 
 \describe{
-\item{\code{zone}}{A raster representing the study area (could be the niche model)}
+\item{\code{adj_matix}}{An adjacency matrix}
+
+\item{\code{adj_list}}{An adjacency list}
 
 \item{\code{initial_points}}{A presence-absence vector with species' occurrences}
 
 \item{\code{n_initial_points}}{Number of initial points used to start the dispersal process}
+
+\item{\code{ngbs}}{Number of neighbors}
 }}
 
 \examples{
