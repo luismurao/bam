@@ -53,13 +53,22 @@ adj_mat <- function(modelsparse,ngbs=1,eigen_sys=FALSE,which_eigs=1){
   r_ad <- .adjacentBAM(x = modelsparse@bin_model,
                        cells = no_na,ngb = ngMat)
 
+  newf1 <- as.numeric(as.factor(r_ad[,1]))
+  newf2 <- as.numeric(as.factor(r_ad[,2]))
+  r_ad_b <- r_ad
+  r_ad_b[,1] <- newf1
+  r_ad_b[,2] <- newf2
+  rd_adlist <- split(r_ad_b[,2],r_ad_b[,1])
+
   m_ad1 <- Matrix::sparseMatrix( i=match(r_ad[,2],no_na),
                                  j=match(r_ad[,1],no_na),
                                  x=1.0 )
 
   #Matrix::diag(m_ad1) <- 1
 
-  g_set0 <- setM(adj_matrix = m_ad1,ngbs =ngbs,
+  g_set0 <- setM(adj_matrix = m_ad1,
+                 adj_list = rd_adlist,
+                 ngbs =ngbs,
                  coordinates = modelsparse@coordinates)
 
   if(eigen_sys){
