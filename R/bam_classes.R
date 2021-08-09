@@ -53,9 +53,11 @@ setA <- methods::setClass(Class = "setA",
 
 #' Class for the M set of the \code{bam} digram
 #' @aliases M-class
-#' @slot zone A raster representing the study area (could be the niche model)
+#' @slot adj_matix An adjacency matrix
+#' @slot adj_list An adjacency list
 #' @slot initial_points A presence-absence vector with species' occurrences
 #' @slot n_initial_points Number of initial points used to start the dispersal process
+#' @slot ngbs Number of neighbors
 #' @importClassesFrom raster RasterLayer
 #' @importClassesFrom raster RasterStack
 #' @importClassesFrom Matrix dgCMatrix
@@ -69,6 +71,7 @@ setA <- methods::setClass(Class = "setA",
 setM <- methods::setClass(Class = "setM",
                           contains = "g_area",
                           slots =  c(adj_matrix = "dgCMatrix",
+                                     adj_list = "list",
                                      initial_points = "dgCMatrix",
                                      ngbs = "numeric"))
 
@@ -76,6 +79,7 @@ setM <- methods::setClass(Class = "setM",
 #' @aliases bam-class
 #' @author Luis Osorio-Olvera & Jorge Soberón
 #' @slot sdm_sim A list of sparse vectors representing the area occupied
+#' @slot palatable_matrices A list of sparse vectors representing palatable sites.
 #' @slot sim_steps Number of simulation steps
 #' by the species
 #' @exportClass bam
@@ -84,6 +88,7 @@ setM <- methods::setClass(Class = "setM",
 bam <- methods::setClass(Class = "bam",
                          contains = c("setA","setM"),
                          slots = c(sdm_sim = "list",
+                                   palatable_matrices = "list",
                                    sim_steps="numeric"))
 
 
