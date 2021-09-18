@@ -4,9 +4,9 @@
 \name{bam-class}
 \alias{bam-class}
 \alias{bam}
-\title{Class  \code{bam} digram}
+\title{Class \code{bam} digram}
 \description{
-Class  \code{bam} digram
+Class \code{bam} digram
 }
 \section{Slots}{
 
@@ -20,5 +20,7 @@ by the species}
 }}
 
 \author{
+Luis Osorio-Olvera & Jorge Soberón
+
 Luis Osorio-Olvera & Jorge Soberón
 }
