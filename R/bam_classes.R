@@ -62,11 +62,9 @@ setA <- methods::setClass(Class = "setA",
 #' @importClassesFrom raster RasterStack
 #' @importClassesFrom Matrix dgCMatrix
 #' @author Luis Osorio-Olvera & Jorge Soberón
-#' @exportClass setM
-#' @export
 #' @examples
 #' showClass("setM")
-#' @rdname setM
+#' @exportClass setM
 
 setM <- methods::setClass(Class = "setM",
                           contains = "g_area",
@@ -75,7 +73,7 @@ setM <- methods::setClass(Class = "setM",
                                      initial_points = "dgCMatrix",
                                      ngbs = "numeric"))
 
-#' Class  \code{bam} digram
+#' Class \code{bam} digram
 #' @aliases bam-class
 #' @author Luis Osorio-Olvera & Jorge Soberón
 #' @slot sdm_sim A list of sparse vectors representing the area occupied
@@ -83,8 +81,8 @@ setM <- methods::setClass(Class = "setM",
 #' @slot sim_steps Number of simulation steps
 #' by the species
 #' @exportClass bam
-#' @export
-#'
+#' @author Luis Osorio-Olvera & Jorge Soberón
+
 bam <- methods::setClass(Class = "bam",
                          contains = c("setA","setM"),
                          slots = c(sdm_sim = "list",
@@ -97,8 +95,9 @@ bam <- methods::setClass(Class = "bam",
 #' @author Luis Osorio-Olvera & Jorge Soberón
 #' @slot community_sim A list of sparse vectors representing the area occupied
 #' by the species
+#' @exportClass community_sim
 
-community_bam <- methods::setClass(Class = "community_bam",
+community_bam <- methods::setClass(Class = "community_sim",
                                    #contains = c("bam"),
                                    slots = c(community_sim = "list"))
 
