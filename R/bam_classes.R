@@ -24,32 +24,45 @@ g_area <- methods::setClass(Class = "g_area",
                                       ))
 
 #' Class for the A set of the BAM diagram
-#' @aliases A-class
+#'
+#' A class for the A set of the BAM diagram. It contains raster models and
+#' IDs of pixels with values different than NA.
+#'
+#' @slot bin_model A binary niche model in raster format
+#' @slot con_model A continuous niche model in raster format
+#' @slot cellIDs A numeric vector with the IDs of the cells with prediction values
+#' @slot sparse_model A niche model in sparse matrix format
 #' @importClassesFrom raster RasterLayer
 #' @importClassesFrom raster RasterStack
 #' @importClassesFrom Matrix dgCMatrix
 #' @importFrom methods new
-#' @author Luis Osorio-Olvera & Jorge Soberón
-#' @slot bin_model A niche model in raster format
-#' @slot cellIDs A numeric vector with the IDs of the cells with prediction values
-#' @slot sparse_model A niche model in sparse matrix format
-#' @exportClass setA
-#' @export
-#' @examples
+#' @aliases A-class
 #' showClass("setA")
 #' @rdname setA
+#' @author Luis Osorio-Olvera & Jorge Soberón
+#' @export
+#' @exportClass setA
+#'
 setA <- methods::setClass(Class = "setA",
                           slots = c(bin_model = "RasterLayer",
+                                    con_model =  "RasterLayer",
                                     cellIDs = "numeric",
                                     sparse_model = "dgCMatrix"),
                           contains = "g_area",
                           validity = function(object){
                             bin_class <- class(object@bin_model)
+                            con_class <- class(object@con_model)
                             if(!bin_class %in% c("RasterLayer",
                                                  "RasterStack")){
                               stop("bin_model should be a raster layer
                                    or raster stack")
-                            }})
+                            }
+                            if(!con_class %in% c("RasterLayer",
+                                                 "RasterStack")){
+                              stop("con_model should be a raster layer
+                                   or raster stack")
+                            }
+                            })
 
 #' Class for the M set of the \code{bam} digram
 #' @aliases M-class

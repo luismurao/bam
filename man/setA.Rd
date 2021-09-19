@@ -5,23 +5,24 @@
 \alias{setA-class}
 \alias{setA}
 \alias{A-class}
+\alias{showClass("setA")}
 \title{Class for the A set of the BAM diagram}
 \description{
-Class for the A set of the BAM diagram
+A class for the A set of the BAM diagram. It contains raster models and
+IDs of pixels with values different than NA.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{bin_model}}{A niche model in raster format}
+\item{\code{bin_model}}{A binary niche model in raster format}
+
+\item{\code{con_model}}{A continuous niche model in raster format}
 
 \item{\code{cellIDs}}{A numeric vector with the IDs of the cells with prediction values}
 
 \item{\code{sparse_model}}{A niche model in sparse matrix format}
 }}
 
-\examples{
-showClass("setA")
-}
 \author{
 Luis Osorio-Olvera & Jorge Soberón
 }
