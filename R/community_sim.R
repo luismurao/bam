@@ -1,6 +1,6 @@
 #' community_bam: Community \code{bam}
 #'
-#' @description Estimate comunity dynamics using the \code{bam} framework
+#' @description Estimate community dynamics using the \code{bam} framework
 #' @param en_models A stack or directory with the ecological niche models for
 #' each species in the community.
 #' @param ngbs_vect A vector
@@ -27,11 +27,11 @@
 #'                                   "lagos_initit.csv"))
 #' nsteps <- 30
 
-#' sdm_comm <- community_sim(en_models = enm_path,
-#'                           ngbs_vect = ngbs_vect,
-#'                           init_coords = init_coords,
-#'                           nsteps = nsteps,
-#'                           threshold = 0.1)
+#' sdm_comm <- bam::community_sim(en_models = enm_path,
+#'                                ngbs_vect = ngbs_vect,
+#'                                init_coords = init_coords,
+#'                                nsteps = nsteps,
+#'                                threshold = 0.1)
 #'
 #'}
 
