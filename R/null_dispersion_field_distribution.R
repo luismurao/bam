@@ -1,5 +1,5 @@
 #' null_dispersion_field_distribution: Null distribution of the dispersion field
-#' @description null_dispersion_field_distribution estimates a random distribuion
+#' @description null_dispersion_field_distribution estimates a random distribution
 #' of the dispersion field values.
 #' @param pam A Presence-Absence-Matrix of matrix class or sparse matrix.
 #' @param n_iter Number of iterations to obtain the distribution.
@@ -46,7 +46,7 @@ null_dispersion_field_distribution <- function(pam,n_iter=10,parallel=TRUE,n_cor
 
     y=data.frame(dfield =distfield@dispersion_field)
     return(y)
-  },.progress = T)
+  },.progress = T,.options = furrr::furrr_options(seed = NULL))
   plan(sequential)
 
   distfield_rand <- data.matrix(distfield_rand)
