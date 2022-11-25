@@ -11,6 +11,9 @@
   niche_layers,
   nbgs_vec = NULL,
   nsteps_vec,
+  stochastic_dispersal = FALSE,
+  disp_prop2_suitability = TRUE,
+  disper_prop = 0.5,
   animate = FALSE,
   period_names = NULL,
   fmt = "GIF",
@@ -33,6 +36,15 @@ each time period}
 \item{nbgs_vec}{A vector with the number of neighbors for the adjacency matrices}
 
 \item{nsteps_vec}{Number of simulation steps for each time period.}
+
+\item{stochastic_dispersal}{Logical. If dispersal depends on a probability of
+visiting neighbor cells (Moore neighborhood).}
+
+\item{disp_prop2_suitability}{Logical. If probability of dispersal is proportional
+to the suitability of reachable cells. The proportional value must be declered
+in the parameter `disper_prop`.}
+
+\item{disper_prop}{Probability of dispersal to reachable cells.}
 
 \item{animate}{Logical. If TRUE a dispersal animation on climate change scenarios will be created}
 
@@ -68,7 +80,7 @@ library(raster)
 # Read raster model for Lepus californicus
 model_path <- system.file("extdata/Lepus_californicus_cont.tif",
                           package = "bam")
-model <- raster::raster(model_path) >0.1
+model <- raster::raster(model_path)
 # Convert model to sparse
 sparse_mod <- bam::model2sparse(model = model)
 # Compute adjacency matrix
