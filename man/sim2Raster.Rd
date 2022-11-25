@@ -31,11 +31,11 @@ occs_lep_cal <- data.frame(longitude = c(-115.10417,
                                         29.81846))
 occs_sparse <- bam::occs2sparse(modelsparse = sparse_mod,
                                 occs = occs_lep_cal)
-smd_lep_cal <- bam::sdm_sim(set_A = sparse_mod,
+sdm_lep_cal <- bam::sdm_sim(set_A = sparse_mod,
                             set_M = adj_mod,
                             initial_points = occs_sparse,
                             nsteps = 100)
-sdm_lep_cal_st <- bam::sim2Raster(sdm_simul = smd_lep_cal,
+sdm_lep_cal_st <- bam::sim2Raster(sdm_simul = sdm_lep_cal,
                                   which_steps = seq(1,100,by=5))
 }
 }
