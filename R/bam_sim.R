@@ -96,7 +96,7 @@ bam_sim <- function(sp1,sp2,set_M,initial_points,
   }
 
   bamsim <- bam(sdm_sim =sdm,
-                bin_model=sp1_sp2,
+                niche_model=sp1_sp2,
                 cellIDs=A@cellIDs,
                 sparse_model = A@sparse_model,
                 coordinates =A@coordinates,
