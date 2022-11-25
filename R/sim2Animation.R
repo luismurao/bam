@@ -37,12 +37,12 @@
 
 #' occs_sparse <- bam::occs2sparse(modelsparse = sparse_mod,
 #'                                 occs = occs_lep_cal)
-#' smd_lep_cal <- bam::sdm_sim(set_A = sparse_mod,
+#' sdm_lep_cal <- bam::sdm_sim(set_A = sparse_mod,
 #'                             set_M = adj_mod,
 #'                             initial_points = occs_sparse,
 #'                             nsteps = 50)
 #' ani_name <- "C:/Users/l916o895/Dropbox/TeoriadeBAM/ani_test.html"
-#' sdm_lep_cal_st <- bam::sim2Animation(sdm_simul = smd_lep_cal,
+#' sdm_lep_cal_st <- bam::sim2Animation(sdm_simul = sdm_lep_cal,
 #'                                      which_steps = seq(1,50,by=1),
 #'                                      fmt = "HTML",ani.width = 1200,
 #'                                      ani.height = 1200,
