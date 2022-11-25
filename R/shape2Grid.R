@@ -10,7 +10,7 @@
 #' \dontrun{
 #' data("wrld_simpl", package = "maptools")
 #' mx <- wrld_simpl[wrld_simpl$NAME=="Mexico",]
-#' mx_grid <- shape2Grid(mx,0.5)
+#' mx_grid <- bam::shape2Grid(mx,0.5)
 #' }
 
 
