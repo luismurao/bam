@@ -38,6 +38,7 @@
 #'                                    raster_templete = en_models[[1]],
 #'                                    return_null_dfield=TRUE)
 #' bam::plot(rdivan,plot_type="diversity_range")
+#' bam::plot(rdivan,plot_type="diversity_range_map")
 #' bam::plot(rdivan,plot_type="diversity_range_interactive")
 #'
 #' }
@@ -106,14 +107,30 @@ diversity_range_analysis <- function(pam,xy_mat=NULL,lower_interval=0.05,
   richness_cat[q_rich_int_ids,1] <- 2
   richness_cat[q_rich_hig_ids,1] <- 4
   dfalpha <- disfield_cat*richness_cat
-
-  dfalpha <- disfield_cat*richness_cat
   range_div_cols <-  dfalpha
   #alpha_rasterC <-   range_div_cols
   range_div_cols <- as.factor(dfalpha)
-  levels(range_div_cols) <- cols
-  #range_div_cols <- as.character(range_div_cols)
-  results@diversity_range_colors <- as.character(range_div_cols)
+
+  # Random "#000000" = 0
+  # HE/LR "#F6BDC0" = 1
+  # HE/IR  = "#F1A13A" = 2
+  # LE/LR = "#BBDFFA" = 3
+  # HE/HR = #DC1C13" = 4
+  # LE/IR  = "#6987D5" = 6
+  # LE/HR = "#1727AE" = 12
+  codifi <- c("Random" = 0,"HE/LR"=1,"HE/IR"=2,
+              "LE/LR"=3, "HE/HR"=4, "LE/IR" = 6,
+              "LE/HR" =12)
+  levels(range_div_cols) <- codifi[codifi %in% levels(range_div_cols)]
+  vals <- as.numeric(as.character(range_div_cols))
+  #levels(range_div_cols) <- cols[codifi %in% levels(range_div_cols)]
+  results@diversity_range_colors <- ifelse(vals == 0,"#000000",
+                                           ifelse(vals ==1, "#F6BDC0",
+                                                  ifelse(vals==2,"#F1A13A",
+                                                         ifelse(vals==3,"#BBDFFA",
+                                                                ifelse(vals==4,"#DC1C13",
+                                                                       ifelse(vals==6,"#6987D5",
+                                                                              ifelse(vals==12,"#1727AE",NA)))))))
   if(is.matrix(xy_mat) || is.data.frame(xy_mat)){
 
 
@@ -132,7 +149,7 @@ diversity_range_analysis <- function(pam,xy_mat=NULL,lower_interval=0.05,
       alpha_raster[cellIDs]<- bioind@alpha
       results@alpha_raster <- alpha_raster
       dispersion_field_raster[cellIDs] <- bioind@dispersion_field
-      diversity_range_raster[cellIDs] <- range_div_cols
+      diversity_range_raster[cellIDs] <- vals
       results@dispersion_field_raster <- dispersion_field_raster
       results@diversity_range_raster<- diversity_range_raster
     }
