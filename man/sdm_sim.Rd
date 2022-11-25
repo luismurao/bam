@@ -55,9 +55,13 @@ occs_lep_cal <- data.frame(longitude = c(-110.08880,
 
 occs_sparse <- bam::occs2sparse(modelsparse = sparse_mod,
                                 occs = occs_lep_cal)
-smd_lep_cal <- bam::sdm_sim(set_A = sparse_mod,
+sdm_lep_cal <- bam::sdm_sim(set_A = sparse_mod,
                             set_M = adj_mod,
                             initial_points = occs_sparse,
-                            nsteps = 10)
+                            nsteps = 10,
+                            stochastic_dispersal = TRUE,
+                            disp_prop2_suitability=TRUE,
+                            disper_prop=0.5,
+                            progress_bar=TRUE)
 }
 }
