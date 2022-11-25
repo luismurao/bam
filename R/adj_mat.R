@@ -44,27 +44,28 @@ adj_mat <- function(modelsparse,ngbs=1,eigen_sys=FALSE,which_eigs=1){
 
   no_na <- modelsparse@cellIDs
 
-  #r_ad <- raster::adjacent(modelsparse@bin_model,
-  #                         cells = no_na,
-  #                         target=no_na,
-  #                         directions=ngMat,
-  #                         sorted=TRUE,id=F)
+  r_ad <- raster::adjacent(x = modelsparse@niche_model,
+                           cells = no_na,directions = ngMat,
+                           target = no_na)
 
-  r_ad <- .adjacentBAM(x = modelsparse@bin_model,
-                       cells = no_na,ngb = ngMat)
-
-  newf1 <- as.numeric(as.factor(r_ad[,1]))
-  newf2 <- as.numeric(as.factor(r_ad[,2]))
-  r_ad_b <- r_ad
-  r_ad_b[,1] <- newf1
-  r_ad_b[,2] <- newf2
-  rd_adlist <- split(r_ad_b[,2],r_ad_b[,1])
-
-  m_ad1 <- Matrix::sparseMatrix( i=match(r_ad[,2],no_na),
-                                 j=match(r_ad[,1],no_na),
+  m_ad1 <- Matrix::sparseMatrix( i=match(r_ad[,1],no_na),
+                                 j=match(r_ad[,2],no_na),
                                  x=1.0 )
-
-  #Matrix::diag(m_ad1) <- 1
+  id_nona <- 1:length(no_na)
+  newff <- as.factor(c(r_ad[,1],r_ad[,2]))
+  newff2 <- newff
+  connected_cells <- as.numeric(as.character(levels(newff)))
+  connected_ids <- id_nona[which(no_na %in% connected_cells)]
+  levels(newff2) <- connected_ids
+  newnu <- as.numeric(as.character(newff2))
+  idc <- 1:nrow(r_ad)
+  from <- as.numeric(as.character(newff[idc]))
+  to <- as.numeric(as.character(newff[-idc]))
+  from_nu <- newnu[idc]
+  to_nu <- newnu[-idc]
+  big_vec <- c(from,to, from_nu,to_nu)
+  r_ad_b <- matrix(big_vec,ncol = 4,byrow = F)
+  rd_adlist <- split.data.frame(r_ad_b, r_ad_b[,3])
 
   g_set0 <- setM(adj_matrix = m_ad1,
                  adj_list = rd_adlist,
