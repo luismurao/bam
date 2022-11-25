@@ -79,7 +79,7 @@ bam_clusters <- function(model,ngbs=1,plot_model=FALSE){
   # Mapa de los clusters
 
 
-  raster_clust <- msparse@bin_model
+  raster_clust <- msparse@niche_model
 
   df_clust1 <- data.frame(msparse@coordinates[clusterDF$cellID,],
                           clusterID = clusterDF$cluster,
@@ -107,7 +107,7 @@ bam_clusters <- function(model,ngbs=1,plot_model=FALSE){
     #m2 <- raster::projectRaster(model, crs=nw)
     #m2 <- leaflet::projectRasterForLeaflet(model,method = "bilinear")
 
-    mod <- round(msparse@bin_model)
+    mod <- round(msparse@niche_model)
     mod <- raster::as.factor(mod)
     m <- m %>%
       leaflet::addRasterImage( mod,
