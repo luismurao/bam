@@ -43,7 +43,7 @@ eigen_bam <- function(A=NULL,M=NULL,which_eigen=1,rmap=TRUE){
 
 
     if(rmap){
-      m1 <- A@bin_model
+      m1 <- A@niche_model
       m1[A@cellIDs] <- r2$eigen_vectors_norm[,which_eigen]
       r2$map <- m1
     }
