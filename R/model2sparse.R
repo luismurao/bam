@@ -10,29 +10,45 @@
 #'                           package = "bam")
 #' model <- raster::raster(model_path)
 #'
-#' sparse_mod <- bam::model2sparse(model,threshold=0.05)
+#' sparse_mod <- bam::model2sparse(model, threshold=0.05)
 #' }
 model2sparse <- function(model, threshold=NULL){
+
+  is_continous <- function(model){
+    ff <- raster::freq(model,digits=2, useNA="no")
+    if(nrow(ff)>3)
+      return(TRUE)
+    else
+      return(FALSE)
+  }
+
+  source_model <- model
+
   if(is.numeric(threshold)){
     model <- model > threshold
+    source_model <- source_model*model
   }
-  model_vals <- raster::getValues(model)
-  in_niche <- which(!is.na(model_vals))
-  cell_ids <- stats::complete.cases(model_vals)
-  out_niche <- which(cell_ids[-in_niche])
-  all_area <- which(cell_ids)
 
-  ncols <- nrows <- length(all_area)
-  mod_sparse <- Matrix::sparseMatrix(i=match(in_niche,all_area),
-                                     j=match(in_niche,all_area),
-                                     x=model_vals[in_niche],
+  is_cont <- is_continous(model = model)
+  if(is_cont){
+    base::stop("Please provide a suitability value to binarize model")
+  }
+  model_vals <- raster::getValues(model)*1
+  in_calArea <- which(!is.na(model_vals))
+  ncols <- nrows <- length(in_calArea)
+  mod_sparse <- Matrix::sparseMatrix(i=1:length(in_calArea),
+                                     j=1:length(in_calArea),
+                                     x=model_vals[in_calArea],
                                      dims = c(nrows,ncols))*1
-  mod_coords <- raster::coordinates(model)[all_area,]
-  mod_atts <- setA(bin_model = model,
-                   cellIDs = all_area,
+  mod_coords <- raster::coordinates(model)[in_calArea,]
+  mod_atts <- setA(niche_model = model,
+                   suit_threshold = ifelse(is.numeric(threshold),
+                                           threshold,as.numeric(NA)),
+                   cellIDs = in_calArea,
+                   suit_values = if(is_continous(source_model)){
+                     source_model[in_calArea]} else as.numeric(NA),
                    sparse_model =  mod_sparse,
                    coordinates= mod_coords)
   return(mod_atts)
 
 }
-
