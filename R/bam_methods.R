@@ -12,22 +12,41 @@ methods::setMethod(f = "show",
 
                      cat("Set A of the BAM digram it contains",
                          length(slotsin),"slots \n\n")
+                     #cat("@niche_model, @suit_threshold,@cellIDs,@suit_values\n",
+                     #   "@sparse_model,@coordinates,@eigen_vec,@eigen_val",sep = "")
                      npixs <- length(object@cellIDs)
-                     if("bin_model" %in% slotsin){
-                       cat("@bin_model: a niche model:\n\n")
-                       print(object@bin_model)
+                     if("niche_model" %in% slotsin){
+                       cat("@niche_model: a niche model:\n\n")
+                       print(object@niche_model)
+                     }
+                     if("suit_threshold" %in% slotsin){
+                       cat("@suit_threshold: Threshold value used to binarize model")
+                       #print(object@suit_threshold)
                      }
                      if("cellIDs" %in% slotsin){
                        cat("@cellIDs: ids of the cells that have values",
                            paste0("(",npixs," pixels)"),"\n\n")
                      }
+                     if("suit_values" %in% slotsin){
+                       cat("@suit_values:",
+                           "Suitability values of the continuous model\n\n")
+
+                     }
                      if("sparse_model" %in% slotsin){
                        cat("@sparse_model:",
                            "A sparse square matrix of ",
                            npixs,"x",npixs,
-                           "entries (showing only 4 entries) \n\n")
-                       print(head(object@sparse_model[1:2,1:2]))
+                           "entries \n\n")
+
                      }
+                     if("suit_values" %in% slotsin){
+                       cat("@coordinates:",
+                           "Pixel centroid coordinates of the model\n\n")
+
+                     }
+
+
+
                     # if("occs_sparse" %in% slotsin){
                     #   cat("Number of occurences:",
                     #       (object@n_occs))
@@ -240,10 +259,16 @@ methods::setMethod(f = "plot",
                        nsps <- x@nsps
 
                        if(x@nsites>0){
-                         #cols <- c("#000000","#F6BDC0",
-                         #         "#F07470","#BBDFFA",
-                          #         "#DC1C13","#6987D5",
-                           #        "#1727AE")
+                         # Random "#000000" = 0
+                         # HE/LR "#F6BDC0" = 1
+                         # HE/IR  = "#F1A13A" = 2
+                         # LE/LR = "#BBDFFA" = 3
+                         # HE/HR = #DC1C13" = 4
+                         # LE/IR  = "#6987D5" = 6
+                         # LE/HR = "#1727AE" = 12
+                         codifi <- c("Random" = 0,"HE/LR"=1,"HE/IR"=2,
+                                     "LE/LR"=3, "HE/HR"=4, "LE/IR" = 6,
+                                     "LE/HR" =12)
 
                          cols <- c("#000000","#F6BDC0",
                                    "#F1A13A","#BBDFFA",
@@ -254,8 +279,9 @@ methods::setMethod(f = "plot",
                                           "HE/IR","LE/LR",
                                           "HE/HR","LE/IR",
                                           "LE/HR")
-                         COLORES<- cols
-                         COLORES <- COLORES[c(1:3,5,4,6,7)]
+
+                         COLORES <- cols[names(cols) %in% names(codifi)]
+                         #COLORES <- COLORES[c(1:3,5,4,6,7)]
                          if(is.null(pch)){
                            pch <- 19
                          }
@@ -310,17 +336,19 @@ methods::setMethod(f = "plot",
                              Longitude <- x@xy_coordinates[,1]
                              Latitude <-  x@xy_coordinates[,2]
                              labs <- as.factor(x@diversity_range_colors)
-                             levels(labs) <- c("Random","LE/HR",
-                                               "HE/IR","LE/LR",
-                                               "HE/HR","LE/IR",
-                                               "HE/LR")
-                             cols <- c(grDevices::rgb(165/255,170/255,153/255),#1
-                                       grDevices::rgb(229/255,134/255,6/255), #2
-                                       grDevices::rgb(93/255,105/255,177/255), #
-                                       grDevices::rgb(204/255,97/255,176/255), #
-                                       grDevices::rgb(153/255,201/255,69/255), #5
-                                       grDevices::rgb(218/255,165/255,27/255), #6
-                                       grDevices::rgb(237/255,100/255,90/255)) #7
+                             #levels(labs) <- c("Random","LE/HR",
+                              #                 "LE/LR","HE/IR",
+                              #                 "HE/HR","LE/IR",
+                              #                 "HE/LR")
+                             levels(labs) <- names(COLORES)
+
+                             #cols <- c(grDevices::rgb(165/255,170/255,153/255),#1
+                              #         grDevices::rgb(229/255,134/255,6/255), #2
+                               #        grDevices::rgb(93/255,105/255,177/255), #
+                                #       grDevices::rgb(204/255,97/255,176/255), #
+                                 #      grDevices::rgb(153/255,201/255,69/255), #5
+                                  #     grDevices::rgb(218/255,165/255,27/255), #6
+                                   #    grDevices::rgb(237/255,100/255,90/255)) #7
 
 
                              div1 <- data.frame(alpha=alpha_norm,
@@ -330,6 +358,7 @@ methods::setMethod(f = "plot",
                                                 labs=as.character(labs),
                                                 col=as.character(labs))
                              div1$col <- as.factor(div1$labs)
+
                              levels(div1$col) <- cols[c(7,2,6,5,4,3,1)]
                              div1$col <- as.character(div1$col)
                              diversity <- crosstalk::SharedData$new(div1)
@@ -388,12 +417,29 @@ methods::setMethod(f = "plot",
                             raster::hasValues(x@diversity_range_raster)){
                            if(is.null(col)){
                              col1 <- cols
-                           }
-                           else{
+                           }else{
                              col1 <- rev(grDevices::terrain.colors(7))
                            }
+
                            randiv <- x@diversity_range_raster
-                           raster::plot(randiv,col=col1,legend=FALSE,...)
+                           maxval <- raster::maxValue(randiv)
+                           r <- raster::ratify(randiv)
+                           #rat <- levels(r)[[1]]
+                           #rat$VALUE <- c("#000000","#F6BDC0","#F1A13A",
+                            #               "#BBDFFA","#DC1C13","#6987D5",
+                            #               "#1727AE")
+                           #levels(r) <- rat
+                           vals <- randiv[]
+                           cols1 <- ifelse(vals == 0,"#000000",
+                                           ifelse(vals ==1, "#F6BDC0",
+                                                 ifelse(vals==2,"#F1A13A",
+                                                         ifelse(vals==3,"#BBDFFA",
+                                                               ifelse(vals==4,"#DC1C13",
+                                                                     ifelse(vals==6,"#6987D5",
+                                                                            ifelse(vals==12,"#1727AE",NA)))))))
+                           raster::values(r) <- as.factor(cols1)
+                           cc <- raster::levels(r)[[1]]
+                           raster::plot(r,col=cc$VALUE,legend=FALSE,...)
                            if(legend){
                              graphics::legend(legend_position,legend = names(COLORES),
                                               pch=15,col = COLORES,bty = "n",...)
@@ -542,26 +588,26 @@ methods::setMethod(f = "predict",
 
                      sim_results <- list(object)
 
-                     initial_points <- object@sdm_sim[[object@sim_steps]]
+                     initial_points <- Matrix::t(object@sdm_sim[[object@sim_steps]])
                      nsteps <- nsteps_vec[1]
                      niche_mod <- niche_layers[[1]]
-                     sparse_mod <- bam::model2sparse(niche_mod)
+                     sparse_mod <- bam::model2sparse(niche_mod,threshold = object@suit_threshold)
                      sdm <- bam::sdm_sim(set_A = sparse_mod,
                                          set_M = ad_mat[[1]],
                                          initial_points = initial_points,
                                          nsteps = nsteps)
 
 
-                     periods <- raster::stack(object@bin_model,niche_layers)
+                     periods <- raster::stack(object@niche_model,niche_layers)
 
                      sim_results[[2]] <-sdm
                      if(n_enm > 1){
                        for(x in 2:length(nsteps_vec)){
                          nsteps <- nsteps_vec[x]
                          niche_mod <- niche_layers[[x]]
-                         sparse_mod <- bam::model2sparse(niche_mod)
+                         sparse_mod <- bam::model2sparse(niche_mod,object@suit_threshold)
                          bam_object <- sim_results[[x]]
-                         initial_points <- bam_object@sdm_sim[[bam_object@sim_steps]]
+                         initial_points <- Matrix::t(bam_object@sdm_sim[[bam_object@sim_steps]])
 
                          sdm <- bam::sdm_sim(set_A = sparse_mod,
                                              set_M = ad_mat[[x]],
