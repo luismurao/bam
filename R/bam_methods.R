@@ -467,6 +467,12 @@ methods::setMethod(f = "plot",
 #' each time period
 #' @param nbgs_vec A vector with the number of neighbors for the adjacency matrices
 #' @param nsteps_vec Number of simulation steps for each time period.
+#' @param stochastic_dispersal Logical. If dispersal depends on a probability of
+#' visiting neighbor cells (Moore neighborhood).
+#' @param disper_prop Probability of dispersal to reachable cells.
+#' @param disp_prop2_suitability Logical. If probability of dispersal is proportional
+#' to the suitability of reachable cells. The proportional value must be declered
+#' in the parameter `disper_prop`.
 #' @param animate Logical. If TRUE a dispersal animation on climate change scenarios will be created
 #' @param period_names Character vector with the names of periods that will be animated. Default NULL.
 #' @param bg_color Color for unsuitable pixels. Default "#F6F2E5".
@@ -489,7 +495,7 @@ methods::setMethod(f = "plot",
 #' # Read raster model for Lepus californicus
 #' model_path <- system.file("extdata/Lepus_californicus_cont.tif",
 #'                           package = "bam")
-#' model <- raster::raster(model_path) >0.1
+#' model <- raster::raster(model_path)
 #' # Convert model to sparse
 #' sparse_mod <- bam::model2sparse(model = model)
 #' # Compute adjacency matrix
@@ -539,6 +545,9 @@ methods::setMethod(f = "plot",
 methods::setMethod(f = "predict",
                    signature = methods::signature(object = "bam"),
                    function(object,niche_layers,nbgs_vec=NULL,nsteps_vec,
+                            stochastic_dispersal = FALSE,
+                            disp_prop2_suitability=TRUE,
+                            disper_prop=0.5,
                             animate=FALSE,
                             period_names= NULL,
                             fmt="GIF",filename,
@@ -605,7 +614,7 @@ methods::setMethod(f = "predict",
                        for(x in 2:length(nsteps_vec)){
                          nsteps <- nsteps_vec[x]
                          niche_mod <- niche_layers[[x]]
-                         sparse_mod <- bam::model2sparse(niche_mod,object@suit_threshold)
+                         sparse_mod <- bam::model2sparse(model = niche_mod,threshold = object@suit_threshold)
                          bam_object <- sim_results[[x]]
                          initial_points <- Matrix::t(bam_object@sdm_sim[[bam_object@sim_steps]])
 
@@ -667,7 +676,7 @@ methods::setMethod(f = "predict",
                            #nsims <-length(sim_results[[x]]@sdm_sim) -1
                            sdm_ani <- bam::sim2Raster(sim_results[[x]],
                                                       which_steps = which_stepsL[[x]])
-                           sdm_ani <- periods[[x]]*1 * (sdm_ani+1)
+                           sdm_ani <- sim_results[[x]]@niche_model *1 * (sdm_ani+1)
 
                            return(sdm_ani)
                          })
