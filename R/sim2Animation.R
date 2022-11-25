@@ -90,12 +90,12 @@ sim2Animation <- function(sdm_simul,which_steps,
 
     animation::saveGIF({
       for (i in seq_along(which_steps)) {
-        sdm_st <- sdm_simul@bin_model *0
+        sdm_st <- sdm_simul@niche_model *0
         valuess <- sdm_simul@sdm_sim[[which_steps[i]]]
         no_cero <- .nonzero(valuess)
         sdm_st[sdm_simul@cellIDs] <- sdm_simul@sdm_sim[[which_steps[i]]]
 
-        sdm_st <- sdm_simul@bin_model + sdm_st
+        sdm_st <- sdm_simul@niche_model + sdm_st
 
         maxv <- raster::maxValue(sdm_st)
         minv <- raster::minValue(sdm_st)
@@ -143,12 +143,12 @@ sim2Animation <- function(sdm_simul,which_steps,
     dir3 <- gsub("[.]","_",dir3)
     animation::saveHTML({
       for (i in seq_along(which_steps)) {
-        sdm_st <- sdm_simul@bin_model *0
+        sdm_st <- sdm_simul@niche_model *0
         valuess <- sdm_simul@sdm_sim[[which_steps[i]]]
         no_cero <- .nonzero(valuess)
         sdm_st[sdm_simul@cellIDs] <- sdm_simul@sdm_sim[[which_steps[i]]]
 
-        sdm_st <- sdm_simul@bin_model + sdm_st
+        sdm_st <- sdm_simul@niche_model + sdm_st
 
         maxv <- raster::maxValue(sdm_st)
         minv <- raster::minValue(sdm_st)
