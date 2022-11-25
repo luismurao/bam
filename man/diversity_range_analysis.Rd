@@ -62,6 +62,7 @@ rdivan <- diversity_range_analysis(pam=pam,parallel = FALSE,
                                    raster_templete = en_models[[1]],
                                    return_null_dfield=TRUE)
 bam::plot(rdivan,plot_type="diversity_range")
+bam::plot(rdivan,plot_type="diversity_range_map")
 bam::plot(rdivan,plot_type="diversity_range_interactive")
 
 }

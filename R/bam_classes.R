@@ -24,7 +24,20 @@ g_area <- methods::setClass(Class = "g_area",
                                       ))
 
 #' Class for the A set of the BAM diagram
+<<<<<<< Updated upstream
 #' @aliases A-class
+=======
+#'
+#' A class for the A set of the BAM diagram. It contains raster models and
+#' IDs of pixels with values different than NA.
+#'
+#' @slot niche_model A niche model in raster format. It can be a binary model or continuous.
+#' If the model is in a continuous format.
+#' @slot suit_threshold Suitability value used to binarize continuous model
+#' @slot cellIDs A numeric vector with the IDs of the cells with prediction values
+#' @slot suit_values A numeric vector with suitability value of the continuous map
+#' @slot sparse_model A niche model in sparse matrix format
+>>>>>>> Stashed changes
 #' @importClassesFrom raster RasterLayer
 #' @importClassesFrom raster RasterStack
 #' @importClassesFrom Matrix dgCMatrix
@@ -39,17 +52,33 @@ g_area <- methods::setClass(Class = "g_area",
 #' showClass("setA")
 #' @rdname setA
 setA <- methods::setClass(Class = "setA",
+<<<<<<< Updated upstream
                           slots = c(bin_model = "RasterLayer",
+=======
+                          slots = c(niche_model = "RasterLayer",
+                                    suit_threshold = "numeric",
+>>>>>>> Stashed changes
                                     cellIDs = "numeric",
+                                    suit_values = "numeric",
                                     sparse_model = "dgCMatrix"),
                           contains = "g_area",
                           validity = function(object){
+<<<<<<< Updated upstream
                             bin_class <- class(object@bin_model)
                             if(!bin_class %in% c("RasterLayer",
                                                  "RasterStack")){
                               stop("bin_model should be a raster layer
                                    or raster stack")
                             }})
+=======
+                            model_class <- class(object@niche_model)
+                            if(!model_class %in% c("RasterLayer",
+                                                 "RasterStack")){
+                              stop("niche_model should be a raster layer
+                                   or raster stack")
+                            }
+                            })
+>>>>>>> Stashed changes
 
 #' Class for the M set of the \code{bam} digram
 #' @aliases M-class

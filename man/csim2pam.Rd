@@ -30,16 +30,16 @@ ngbs_vect <- sample(1:2,replace = T,
 init_coords <- read.csv(file.path(lagos_path,
                                   "lagos_initit.csv"))
 nsteps <- 30
-sdm_comm <- community_sim(en_models = enm_path,
-                          ngbs_vect = ngbs_vect,
-                          init_coords = init_coords,
-                          nsteps = nsteps,
-                          threshold = 0.1)
+sdm_comm <- bam::community_sim(en_models = enm_path,
+                               ngbs_vect = ngbs_vect,
+                               init_coords = init_coords,
+                               nsteps = nsteps,
+                               threshold = 0.1)
 
-pamt10 <-csim2pam(community_sim = sdm_comm ,
-                  which_steps = 10)
-pams <-csim2pam(community_sim = sdm_comm ,
-                which_steps = c(1:10))
+pamt10 <-bam::csim2pam(community_sim = sdm_comm ,
+                       which_steps = 10)
+pams <- bam::csim2pam(community_sim = sdm_comm ,
+                      which_steps = c(1:10))
 }
 
 }

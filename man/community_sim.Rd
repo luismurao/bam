@@ -22,7 +22,7 @@ y; x is the longitude and y is the latitude of initial disperal points}
 \item{...}{Parameters of the functions of the \code{bam} class}
 }
 \description{
-Estimate comunity dynamics using the \code{bam} framework
+Estimate community dynamics using the \code{bam} framework
 }
 \examples{
 \dontrun{
@@ -37,11 +37,11 @@ ngbs_vect <- sample(1:2,replace = TRUE,
 init_coords <- read.csv(file.path(lagos_path,
                                   "lagos_initit.csv"))
 nsteps <- 30
-sdm_comm <- community_sim(en_models = enm_path,
-                          ngbs_vect = ngbs_vect,
-                          init_coords = init_coords,
-                          nsteps = nsteps,
-                          threshold = 0.1)
+sdm_comm <- bam::community_sim(en_models = enm_path,
+                               ngbs_vect = ngbs_vect,
+                               init_coords = init_coords,
+                               nsteps = nsteps,
+                               threshold = 0.1)
 
 }
 }

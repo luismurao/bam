@@ -24,7 +24,7 @@ null_dispersion_field_distribution(
 A data matrix of size nrow(pam) X n_iter with dispersion field values.
 }
 \description{
-null_dispersion_field_distribution estimates a random distribuion
+null_dispersion_field_distribution estimates a random distribution
 of the dispersion field values.
 }
 \details{

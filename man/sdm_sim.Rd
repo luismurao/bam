@@ -4,7 +4,16 @@
 \alias{sdm_sim}
 \title{sdm_sim: Simulate single species dispersal dynamics using the BAM framework.}
 \usage{
-sdm_sim(set_A, set_M, initial_points, nsteps)
+sdm_sim(
+  set_A,
+  set_M,
+  initial_points,
+  nsteps,
+  stochastic_dispersal = TRUE,
+  disp_prop2_suitability = TRUE,
+  disper_prop = 0.5,
+  progress_bar = TRUE
+)
 }
 \arguments{
 \item{set_A}{A setA object returned by the function \code{\link[bam]{model2sparse}}}
@@ -16,6 +25,17 @@ See \code{\link[bam]{adj_mat}}}
 \code{\link[bam]{occs2sparse}}}
 
 \item{nsteps}{Number of steps to run the simulation}
+
+\item{stochastic_dispersal}{Logical. If dispersal depends on a probability of
+visiting neighbor cells (Moore neighborhood).}
+
+\item{disp_prop2_suitability}{Logical. If probability of dispersal is proportional
+to the suitability of reachable cells. The proportional value must be declered
+in the parameter `disper_prop`.}
+
+\item{disper_prop}{Probability of dispersal to reachable cells.}
+
+\item{progress_bar}{Show progress bar}
 }
 \description{
 sdm_sim: Simulate single species dispersal dynamics using the BAM framework.
@@ -28,10 +48,10 @@ model <- raster::raster(model_path)
 
 sparse_mod <- bam::model2sparse(model,threshold=0.05)
 adj_mod <- bam::adj_mat(sparse_mod,ngbs=1)
-occs_lep_cal <- data.frame(longitude = c(-122.08880,
+occs_lep_cal <- data.frame(longitude = c(-110.08880,
                                          -98.89638),
-                           latitude = c(37.43455,
-                                        30.19919))
+                           latitude = c(30.43455,
+                                        25.19919))
 
 occs_sparse <- bam::occs2sparse(modelsparse = sparse_mod,
                                 occs = occs_lep_cal)

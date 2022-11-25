@@ -23,6 +23,6 @@ model_path <- system.file("extdata/Lepus_californicus_cont.tif",
                           package = "bam")
 model <- raster::raster(model_path)
 
-sparse_mod <- bam::model2sparse(model,threshold=0.05)
+sparse_mod <- bam::model2sparse(model, threshold=0.05)
 }
 }

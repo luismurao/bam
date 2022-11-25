@@ -4,12 +4,16 @@
 \alias{models2pam}
 \title{models2pam: Converts binary rasters to a PAM}
 \usage{
-models2pam(mods_stack, sparse = TRUE)
+models2pam(mods_stack, sparse = TRUE, parallel = FALSE, ncores = 4)
 }
 \arguments{
 \item{mods_stack}{A raster stack containing binay models of each species in the community.}
 
 \item{sparse}{Logical. If TRUE the PAM will be returned as a sparse matrix.}
+
+\item{parallel}{Logical. If TRUE computations will be done in parallel}
+
+\item{ncores}{Integer. Number of cores to run the parallel process.}
 }
 \value{
 A PAM.
@@ -25,6 +29,6 @@ enm_path <- list.files(lagos_path,
                        pattern = ".tif",
                        full.names = TRUE)
 en_models <- raster::stack(enm_path) >0.01
-pam <- bam::models2pam(en_models,sparse=FALSE)
+pam <- bam::models2pam(en_models,sparse=FALSE,parallel=T,ncores=10)
 }
 }
