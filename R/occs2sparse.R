@@ -26,13 +26,13 @@ occs2sparse <- function(modelsparse,occs){
     stop("modelsparse should be of class setA")
   }
 
-  occsIDs <- raster::cellFromXY(modelsparse@bin_model,occs)
+  occsIDs <- raster::cellFromXY(modelsparse@niche_model,occs)
   occsIDsSparese <-  which(modelsparse@cellIDs %in% occsIDs)
   pres_abs <- numeric(nrow(modelsparse@sparse_model))
   pres_abs[occsIDsSparese] <- 1
   pres_abs <- Matrix::Matrix(data = pres_abs,sparse=T)
 
-  #mod_atts <- setA(bin_model = modelsparse@bin_model,
+  #mod_atts <- setA(niche_model = modelsparse@niche_model,
   #                 cellIDs = modelsparse@cellIDs,
   #                 sparse_model =  modelsparse@sparse_model,
   #                 occs_sparse = pres_abs,
