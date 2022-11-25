@@ -94,8 +94,8 @@ number of geographic clusters as a function of dispersal and suitability.
 
 
 ```{r}
-clustersin <- bam_clusters(model=sparse_mod,
-                           ngbs=1,plot_model=FALSE)
+clustersin <- bam::bam_clusters(model=sparse_mod,
+                                ngbs=1,plot_model=FALSE)
 ```
 The function returns the following slots
 
@@ -121,8 +121,8 @@ area of distribution. In this example the approximate number of dispersal steps 
 archive all suitable patches is 30.
 
 ```{r fig.width=4,fig.height=4,fig.cap="Figure 4. Connectivity Sutitability Dispersal plot (CSD plot).\nThe mean number of connected cells (MNCC) is showed in the legend."}
-csd_plot <- csd_estimate(sparse_mod,
-                         dispersal_steps=c(2,4,8,16,32,40))
+csd_plot <- bam::csd_estimate(sparse_mod,
+                              dispersal_steps=c(2,4,8,16,32,40))
 ```
 
 
