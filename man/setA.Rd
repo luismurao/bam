@@ -5,21 +5,19 @@
 \alias{setA-class}
 \alias{setA}
 \alias{A-class}
+\alias{showClass("setA")}
 \title{Class for the A set of the BAM diagram}
 \description{
-Class for the A set of the BAM diagram
+A class for the A set of the BAM diagram. It contains raster models and
+IDs of pixels with values different than NA.
 }
 \section{Slots}{
 
 \describe{
-<<<<<<< Updated upstream
-\item{\code{bin_model}}{A niche model in raster format}
-=======
 \item{\code{niche_model}}{A niche model in raster format. It can be a binary model or continuous.
 If the model is in a continuous format.}
 
 \item{\code{suit_threshold}}{Suitability value used to binarize continuous model}
->>>>>>> Stashed changes
 
 \item{\code{cellIDs}}{A numeric vector with the IDs of the cells with prediction values}
 
@@ -28,9 +26,6 @@ If the model is in a continuous format.}
 \item{\code{sparse_model}}{A niche model in sparse matrix format}
 }}
 
-\examples{
-showClass("setA")
-}
 \author{
 Luis Osorio-Olvera & Jorge Soberón
 }
