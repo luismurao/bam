@@ -203,18 +203,18 @@ Rcpp::NumericVector null_dispersion_field_cat(Rcpp::NumericMatrix dfield,
   //int ncols = dfield_rand.ncol();
   Rcpp::NumericVector dfield_cat(nrows);
   NumericVector probs = {lower_interval,upper_interval};
+  Rcpp::NumericVector q_distfield(2);
   for(int i=0; i< nrows; i++){
-    Rcpp::NumericVector dfield_i = dfield_rand.row(i);
-    NumericVector q_distfield = Quantile(dfield_i,probs= probs);
+    //Rcpp::NumericVector dfield_i = dfield_rand.row(i);
+    q_distfield = Quantile(dfield_rand.row(i),probs);
     double dfield_val = dfield.row(i)[0];
-    if(dfield_val <=q_distfield[0]){
+    if(dfield_val <= q_distfield[0]){
       dfield_cat[i] =1;
     }
-    if(dfield_val>=q_distfield[1]){
+    if(dfield_val >= q_distfield[1]){
       dfield_cat[i] =3;
     }
 
   }
   return dfield_cat;
 }
-
