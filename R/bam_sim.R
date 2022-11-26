@@ -41,7 +41,7 @@
 bam_sim <- function(sp1,sp2,set_M,initial_points,
                      periods_toxic,periods_suitable,
                      nsteps,progress_bar=TRUE){
-  if(!(class(sp1)  == "RasterLayer" && class(sp2)  == "RasterLayer")){
+  if(!(methods::is(sp1,"RasterLayer") && methods::is(sp2,"RasterLayer"))){
     stop("sp1 and sp2 should be of raster class")
   }
   if(!inherits(set_M,"setM")){

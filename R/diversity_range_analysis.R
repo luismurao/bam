@@ -136,7 +136,7 @@ diversity_range_analysis <- function(pam,xy_mat=NULL,lower_interval=0.05,
 
     results@xy_coordinates <- data.matrix(xy_mat)
 
-    if(class(raster_templete) == "RasterLayer"){
+    if(methods::is(raster_templete,"RasterLayer")){
 
       r1 <- raster_templete*0
       alpha_raster <- r1

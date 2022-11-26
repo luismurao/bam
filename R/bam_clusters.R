@@ -30,7 +30,7 @@
 #'
 bam_clusters <- function(model,ngbs=1,plot_model=FALSE){
 
-  if(class(model) == "RasterLayer"){
+  if(methods::is(model,"RasterLayer")){
     msparse <- bam::model2sparse(model)
   }
   else{

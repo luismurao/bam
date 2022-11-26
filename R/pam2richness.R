@@ -31,7 +31,7 @@
 #' @export
 #'
 pam2richness <- function(pamobj,which_steps){
-  if(class(pamobj) != "pam"){
+  if(!methods::is(pamobj,"pam")){
     stop("'pamobj' should be of class pam")
   }
   tsteps <- paste0("time_step_",which_steps)

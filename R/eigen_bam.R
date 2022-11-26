@@ -19,9 +19,9 @@
 #' @export
 
 eigen_bam <- function(A=NULL,M=NULL,which_eigen=1,rmap=TRUE){
-  if(!is.null(A) && !class(A) == "setA")
+  if(!is.null(A) && !methods::is(A, "setA"))
     stop("Object A should be of class setA")
-  if(!is.null(M) && !class(M) == "setM")
+  if(!is.null(M) && !methods::is(M, "setM"))
     stop("Object M should be of class setM")
 
   normalize_vec <- function(x){

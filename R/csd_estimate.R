@@ -21,7 +21,7 @@
 
 csd_estimate <- function(model,dispersal_steps=c(2,4,8,16,32,64)){
 
-  if(class(model) == "raster"){
+  if(methods::is(model,"RasterLayer")){
     model <- bam::model2sparse(model)
   }
   dispersal_steps <- sort(dispersal_steps)
@@ -34,7 +34,7 @@ csd_estimate <- function(model,dispersal_steps=c(2,4,8,16,32,64)){
         r <- bam::bam_clusters(model,ngbs = dispersal_steps[x])
       },silent = TRUE)
 
-      if(class(bclust) != "csd"){
+      if(!methods::is(bclust,"csd")){
         warning("There is not enough memory to calculate",
                 "the adjacency matrix for dispersal step =",
                 dispersal_steps[x],"\n returning ",
@@ -50,7 +50,7 @@ csd_estimate <- function(model,dispersal_steps=c(2,4,8,16,32,64)){
 
   ndisp <- length(csd)
   d_all <- 1:ndisp %>% purrr::map_df(function(x){
-    if(class(csd[[x]]) == "csd"){
+    if(methods::is(csd[[x]],"csd")){
       d1 <- data.frame(csd[[x]]@connections,
                        d=dispersal_steps[x])
       return(d1)

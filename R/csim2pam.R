@@ -33,7 +33,7 @@
 #' }
 #'
 csim2pam <- function(community_sim, which_steps){
-  if(class(community_sim) != "community_sim")
+  if(inherits(community_sim, "community_sim"))
     stop("Object should be of class community_bam")
 
   n_sps <- length(community_sim@community_sim)

@@ -27,7 +27,7 @@ pam2bioindex <- function(pam,biodiv_index="dispersion_field",as_sparse=FALSE) {
   if(is.matrix(pam)){
     pam <- Matrix::Matrix(pam, sparse = TRUE)
   }
-  if(class(pam) != "dgCMatrix"){
+  if(!methods::is(pam,"dgCMatrix")){
     stop('pam should be of class "matrix" or "dgCMatrix"')
   }
   # N the number of sites

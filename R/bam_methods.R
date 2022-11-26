@@ -563,7 +563,7 @@ methods::setMethod(f = "predict",
                                                     "RasterBrick")){
                        stop("niche_layers must be a RasterLayer or RasterStack")
                      }
-                     if(class(niche_layers) == "RasterLayer")
+                     if(methods::is(niche_layers,"RasterLayer"))
                        niche_layers <- raster::stack(niche_layers)
                      n_enm <- raster::nlayers(niche_layers)
                      n_steps_each <- length(nsteps_vec)
