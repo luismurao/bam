@@ -362,7 +362,7 @@ methods::setMethod(f = "plot",
                                   #     grDevices::rgb(218/255,165/255,27/255), #6
                                    #    grDevices::rgb(237/255,100/255,90/255)) #7
                              randiv <- x@diversity_range_raster
-                             vals <- na.omit(randiv[])
+                             vals <- stats::na.omit(randiv[])
                              cols1 <- ifelse(vals == 0,"#000000",
                                              ifelse(vals ==1, "#F6BDC0",
                                                     ifelse(vals==2,"#F1A13A",
