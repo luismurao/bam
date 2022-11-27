@@ -13,7 +13,7 @@ diversity_range_analysis(
   niter = 100,
   return_null_dfield = FALSE,
   parallel = TRUE,
-  n_cores = 4
+  n_cores = 2
 )
 }
 \arguments{
