@@ -21,6 +21,4 @@ by the species}
 
 \author{
 Luis Osorio-Olvera & Jorge Soberón
-
-Luis Osorio-Olvera & Jorge Soberón
 }
