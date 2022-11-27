@@ -75,7 +75,7 @@ sdm_sim <- function(set_A,set_M,initial_points,nsteps,
     }
     for (i in iter_vec) {
       g0_temp <- g0
-      pix_occ <- bam:::.nonzero(g0)[,2]
+      pix_occ <- .nonzero(g0)[,2]
       nbgmat <- do.call(rbind,rd_adlist[pix_occ])
       nbgmat <- nbgmat[!duplicated(nbgmat[,2]),]
       cellIDs <- nbgmat[,2]
@@ -94,7 +94,7 @@ sdm_sim <- function(set_A,set_M,initial_points,nsteps,
       AMA <- set_A@sparse_model %*% M_mat %*% set_A@sparse_model
       #M_mat <- set_M@adj_matrix
       g0 <- g0 %*% AMA
-      g0 <- g0 + g0_temp
+      #g0 <- g0 + g0_temp
       g0[g0>1] <- 1
       sdm[[i+1]] <- g0
       if(progress_bar){
