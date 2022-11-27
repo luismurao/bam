@@ -336,11 +336,23 @@ methods::setMethod(f = "plot",
                              Longitude <- x@xy_coordinates[,1]
                              Latitude <-  x@xy_coordinates[,2]
                              labs <- as.factor(x@diversity_range_colors)
-                             #levels(labs) <- c("Random","LE/HR",
-                              #                 "LE/LR","HE/IR",
-                              #                 "HE/HR","LE/IR",
-                              #                 "HE/LR")
-                             levels(labs) <- names(COLORES)
+
+                             codifi <- c("Random" = 0,"HE/LR"=1,"HE/IR"=2,
+                                         "LE/LR"=3, "HE/HR"=4, "LE/IR" = 6,
+                                         "LE/HR" =12)
+
+                             cols <- c("#000000","#F6BDC0",
+                                       "#F1A13A","#BBDFFA",
+                                       "#DC1C13","#6987D5",
+                                       "#1727AE")
+
+                             names(cols) <- c("Random","HE/LR",
+                                              "HE/IR","LE/LR",
+                                              "HE/HR","LE/IR",
+                                              "LE/HR")
+
+                             COLORES <- cols[names(cols) %in% names(codifi)]
+                             levels(labs) <-  names(COLORES)[order(COLORES,levels(labs))]
 
                              #cols <- c(grDevices::rgb(165/255,170/255,153/255),#1
                               #         grDevices::rgb(229/255,134/255,6/255), #2
@@ -349,18 +361,26 @@ methods::setMethod(f = "plot",
                                  #      grDevices::rgb(153/255,201/255,69/255), #5
                                   #     grDevices::rgb(218/255,165/255,27/255), #6
                                    #    grDevices::rgb(237/255,100/255,90/255)) #7
-
+                             randiv <- x@diversity_range_raster
+                             vals <- na.omit(randiv[])
+                             cols1 <- ifelse(vals == 0,"#000000",
+                                             ifelse(vals ==1, "#F6BDC0",
+                                                    ifelse(vals==2,"#F1A13A",
+                                                           ifelse(vals==3,"#BBDFFA",
+                                                                  ifelse(vals==4,"#DC1C13",
+                                                                         ifelse(vals==6,"#6987D5",
+                                                                                ifelse(vals==12,"#1727AE",NA)))))))
 
                              div1 <- data.frame(alpha=alpha_norm,
                                                 dispersion_field,
                                                 Longitude,
                                                 Latitude,
                                                 labs=as.character(labs),
-                                                col=as.character(labs))
-                             div1$col <- as.factor(div1$labs)
+                                                col=cols1)
+                             #div1$col <- cols1
 
-                             levels(div1$col) <- cols[c(7,2,6,5,4,3,1)]
-                             div1$col <- as.character(div1$col)
+                             #levels(div1$col) <- cols[c(7,2,6,5,4,3,1)]
+                             #div1$col <- as.character(div1$col)
                              diversity <- crosstalk::SharedData$new(div1)
 
                             p1 <-  crosstalk::bscols(
@@ -373,7 +393,7 @@ methods::setMethod(f = "plot",
                                     #marker= list(split=cols[c(7,2,6,5,4,3,1)]),
                                     #split = ~labs,
                                     color = ~labs,
-                                    colors = cols[c(7,2,6,5,4,3,1)],
+                                    colors = COLORES,
                                     inherit = T
                                   )  %>%
                                 plotly::add_polygons(x=c(vx,vx[1]),

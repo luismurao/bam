@@ -46,7 +46,7 @@
 diversity_range_analysis <- function(pam,xy_mat=NULL,lower_interval=0.05,
                                      upper_interval=0.95, raster_templete=NULL,
                                      niter=100,return_null_dfield=FALSE,parallel=TRUE,
-                                     n_cores=4){
+                                     n_cores=2){
 
 
   results <- methods::new(Class = "diversity_range")
